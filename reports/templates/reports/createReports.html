@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to Create Report {{ user.username }} !!!</p>
+    <form method="post" action="/createReport/">{% csrf_token %}
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" name="createReport" value="Create Report"/>
+    </form>
+    <a href="/logout/">Logout</a>
+{% endblock %}
