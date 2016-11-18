@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'groupmanagement'
 ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'FileShare',
+        'NAME': 'cs3240',
         'USER' : 'postgres',
-        'PASSWORD' : 'kam@@kes96',
+        'PASSWORD' : 'were1234',
         'HOST' : 'localhost',
         'PORT' : ''
     }

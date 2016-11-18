@@ -5,8 +5,9 @@
     <p>Welcome {{ user.username }} !!!</p>
     <form method="post" action=".">{% csrf_token %}
     <input type="hidden" name="next" value="groups" />
-    <a href="/createGroup/">CreateGroup</a>
-
     </form>
+    <a href="/createGroup/">CreateGroup</a><br/>
+    <a href="/createMessage/">Send Message</a><br/>
+    <a href="/YourGroups">View your groups</a><br/>
     <a href="/logout/">Logout</a>
 {% endblock %}

@@ -19,11 +19,13 @@
             {% if not user.username == current_user  %}
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
+            <td><button>Add</button></td>
             {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+<a href="/logout/">Logout</a>
+<a href="/">Back</a>
 </body>
 </html>

@@ -13,5 +13,7 @@ urlpatterns = [
          url(r'^home/$', home),
          url(r'^createGroup/$', createGroup),
          url(r'^admin/', admin.site.urls),
-         url(r'^allusers/', displayUsers)
+         url(r'^allusers/', displayUsers),
+         url(r'^YourGroups/', viewGroups),
+         url(r'^group/(.*)', groupActionsView)
 ]
