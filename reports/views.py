@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 @csrf_exempt

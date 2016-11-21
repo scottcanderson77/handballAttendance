@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User, Group
 from .models import report
 
-class ReportForm(forms.Form):
+class ReportForm(forms.ModelForm):
     title = forms.CharField()
     timestamp = forms.DateTimeField()
     short_description = forms.CharField(max_length=30)
@@ -12,5 +12,5 @@ class ReportForm(forms.Form):
     is_encrypted = forms.CharField(max_length=30)
     class Meta:
         model = report
-        fields = ('description', 'document',)
+        fields = ('short_description', 'document',)
 

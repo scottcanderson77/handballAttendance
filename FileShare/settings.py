@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'FileShare',
         'USER' : 'postgres',
-        'PASSWORD' : '',
+        'PASSWORD' : 'database',
         'HOST' : 'localhost',
         'PORT' : ''
     }
