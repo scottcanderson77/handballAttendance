@@ -38,3 +38,32 @@ def createReport(request):
         'reports/createReports.html',
         variables,
     )
+
+def viewReports(request):
+    user = request.user
+    reports = report.objects.all().filter(is_public="True")
+    return render(request, 'reports/viewReports.html', {})
+
+def viewYourReports(request):
+    user = request.user
+    reports = report.objects.all().filter(username_id=user)
+    return render(request, 'reports/viewYourReports.html', {})
+
+def searchReport(request, field):
+    reports.report.objects.all().filter()
+
+def editReport(request, report_id):
+    report = report.object.filter(report_id=report_id)
+    if request.POST:
+        form = ReportForm(request.POST, instance=report)
+        if form.is_valid():
+            form.save()
+            return redirect('Reports')
+        else:
+            form.ReportForm(instance=report)
+            template = 'editReport.html'
+            report = { 'form' : form}
+            return render_to_response(template, report, RequestContext(request))
+
+def deleteReport(request, report_id):
+    report.object.filter(report_id=report_id).delete()
