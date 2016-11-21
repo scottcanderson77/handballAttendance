@@ -12,6 +12,6 @@ class report(models.Model):
     location = models.CharField(max_length=100, default="Virginia")
     is_encrypted = models.BooleanField(default=False)
     document = models.FileField(default='document',upload_to='documents/')
-    uploaded_at = models.DateTimeField(default="time")
+    uploaded_at = models.DateTimeField(default="9999-01-01")
     def __str__(self):
         return self.name
