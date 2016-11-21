@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib.auth.views import login
 from registration.views import *
 from groupmanagement.views import *
+from reports.views import *
 from django.contrib import admin
 
 urlpatterns = [
@@ -15,5 +16,6 @@ urlpatterns = [
          url(r'^admin/', admin.site.urls),
          url(r'^allusers/', displayUsers),
          url(r'^YourGroups/', viewGroups),
-         url(r'^group/(.*)', groupActionsView)
+         url(r'^group/(.*)', groupActionsView),
+         url(r'^createReport/$', createReport)
 ]

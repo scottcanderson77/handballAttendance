@@ -10,15 +10,17 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 @csrf_exempt
 def createReport(request):
     if request.method == 'POST':
-        form = ReportForm(request.POST)
+        form = ReportForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save()
             report_object = report.objects.create(
                 title=form.cleaned_data['title'],
                 timestamp=form.cleaned_data['timestamp'],
                 short_description=form.cleaned_data['short_description'],
                 detailed_description=form.cleaned_data['detailed_description'],
                 status_state=form.cleaned_data['status_state'],
-                location=form.cleaned_data['location']
+                location=form.cleaned_data['location'],
+                is_encrypted = form.cleaned_data['is_encrypted']
 
             )
     else:
@@ -26,6 +28,7 @@ def createReport(request):
     variables = RequestContext(request, {
         'form': form
     })
+
 
     return render_to_response(
         'reports/createReports.html',

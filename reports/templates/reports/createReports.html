@@ -3,11 +3,12 @@
 {% block head %}Welcome to Django{% endblock %}
     {% block content %}
         <p>Welcome to Create Report {{ user.username }} !!!</p>
-    <form method="post" action="/createReport/">{% csrf_token %}
+    <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
         <table border="0">
             {{ form.as_table }}
         </table>
         <input type="submit" name="createReport" value="Create Report"/>
+        <input type="button" value="Upload"/>
     </form>
     <a href="/logout/">Logout</a>
 {% endblock %}
