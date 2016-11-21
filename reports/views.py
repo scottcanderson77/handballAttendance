@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 @csrf_exempt
@@ -13,7 +15,7 @@ def createReport(request):
     if request.method == 'POST':
         form = ReportForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            form.save(commit=True)
             report_object = report.objects.create(
                 title=form.cleaned_data['title'],
                 timestamp=form.cleaned_data['timestamp'],
@@ -21,7 +23,8 @@ def createReport(request):
                 detailed_description=form.cleaned_data['detailed_description'],
                 status_state=form.cleaned_data['status_state'],
                 location=form.cleaned_data['location'],
-                is_encrypted = form.cleaned_data['is_encrypted']
+                is_encrypted = form.cleaned_data['is_encrypted'],
+                username_id= request.user
 
             )
     else:

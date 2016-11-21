@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class report(models.Model):
@@ -13,5 +14,7 @@ class report(models.Model):
     is_encrypted = models.BooleanField(default=False)
     document = models.FileField(default='document',upload_to='documents/')
     uploaded_at = models.DateTimeField(default="9999-01-01")
+    username_id = models.ForeignKey(User, null=True, blank=True)
+
     def __str__(self):
         return self.name
