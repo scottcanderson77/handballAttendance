@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Sent Messages{% endblock %}
+{% block head %}Sent Messsages{% endblock %}
+{% block content %}
+    <title>All Sent Messages</title>
+    </head>
+
+
+    <body>
+    <table style="width:50%">
+    {% for message in messages %}
+        <tr>
+            <td>{{ message.message_title }}</td>
+            <td>{{ message.receiver }}</td>
+
+            </br>
+        </tr>
+    {% endfor %}
+    </table>
+    </body>
+    <a href="/logout/">Logout</a>
+    <a href="/">Back</a>
+{% endblock %}
