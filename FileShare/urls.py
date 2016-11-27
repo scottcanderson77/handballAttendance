@@ -3,6 +3,7 @@ from django.contrib.auth.views import login
 from registration.views import *
 from groupmanagement.views import *
 from reports.views import *
+from message.views import *
 from django.contrib import admin
 
 urlpatterns = [
@@ -17,5 +18,10 @@ urlpatterns = [
          url(r'^allusers/', displayUsers),
          url(r'^YourGroups/', viewGroups),
          url(r'^group/(.*)', groupActionsView),
-         url(r'^createReport/$', createReport)
+         url(r'^createReport/$', createReport),
+         url(r'^messageHome/$', messageHome),
+         url(r'^allMessages/$', displayMessage),
+         url(r'^checkMessage/$', checkMessage),
+         url(r'^createMessage/$', createMessage),
+
 ]

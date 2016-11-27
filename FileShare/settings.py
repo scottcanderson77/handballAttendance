@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration',
     'groupmanagement',
-    'reports'
+    'reports',
+    'message',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,9 +82,9 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'FileShare2',
+        'NAME': 'cs3240',
         'USER' : 'postgres',
-        'PASSWORD' : '',
+        'PASSWORD' : 'were1234',
         'HOST' : 'localhost',
         'PORT' : ''
     }

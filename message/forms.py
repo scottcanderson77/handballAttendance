@@ -28,3 +28,11 @@ class MessageForm(forms.Form):
 
     def clean(self):
         return self.cleaned_data
+
+
+class searchTitleForm(forms.Form):
+    title = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
+            label=_("Title"), error_messages={
+            'invalid': _("This value must contain only letters, numbers and underscores.")})
+    def clean(self):
+        return self.cleaned_data

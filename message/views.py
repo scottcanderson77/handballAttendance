@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from registration import *
+from message.templates import *
 
 # Create your views here.
 
@@ -24,26 +25,66 @@ def createMessage(request):
                 message_body = form.cleaned_data['body'],
             )
 
-        return HttpResponseRedirect('/displayMessage/')
+        return HttpResponseRedirect('/messageHome/')
     else:
         form = MessageForm()
     variables = RequestContext(request, {
         'form': form
     })
 
-
     return render_to_response(
         'createMessage.html',
         variables,
     )
 
-@csrf_exempt
-def displayMessage(request):
-        messages = []
-        messages = Message.objects.filter(sender=request.user)
-        return render_to_response('allMessages.html',{"messages":messages})
 
 @csrf_exempt
-def checkMessage(request) :
+def displayMessage(request):
+    receiver = None
+    if request.method =='POST':
+        form = searchTitleForm(request.POST)
+        if(form.is_valid()):
+           messages = []
+           title = form.cleaned_data['title']
+
+           if (title != None):
+               messages = Message.objects.filter(sender=request.user, message_title=title)
+           else:
+               messages = Message.objects.filter(sender=request.user)
+
+           return render_to_response('allMessages.html', {"messages": messages})
+    else:
+        form = searchTitleForm()
+    variables = RequestContext(request, {'form': form})
+    messages = []
+    messages = Message.objects.filter(sender=request.user)
+    return render_to_response('allMessages.html', {"messages": messages}, variables,)
+
+
+@csrf_exempt
+def checkMessage(request):
+    receiver = None
+    if request.method == 'POST':
+        form = searchTitleForm(request.POST)
+        if (form.is_valid()):
+            messages = []
+            title = form.cleaned_data['title']
+
+            if (title != None):
+                messages = Message.objects.filter(sender=request.user, message_title=title)
+            else:
+                messages = Message.objects.filter(reciever=request.user)
+
+            return render_to_response('checkMessage.html', {"messages": messages})
+    else:
+        form = searchTitleForm()
+    variables = RequestContext(request, {'form': form})
+    messages = []
+    messages = Message.objects.filter(receiver=request.user)
+    return render_to_response('checkMessage.html', {"messages": messages}, variables, )
+
+
+@csrf_exempt
+def messageHome(request):
         message = Message.objects.all()
-        return render_to_response('checkMessage.html')
+        return render_to_response('messageHome.html')

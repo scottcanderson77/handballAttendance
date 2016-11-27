@@ -5,19 +5,22 @@
     <title>All Sent Messages</title>
     </head>
 
-
     <body>
-    <table style="width:50%">
-    {% for message in messages %}
-        <tr>
-            <td>{{ message.message_title }}</td>
-            <td>{{ message.receiver }}</td>
+    <form method="post" action=".">
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Search" />
+    </form>
 
-            </br>
-        </tr>
+
+    {% for message in messages %}
+        <br>    <a href= '/message/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.receiver }}</h></br>
+
     {% endfor %}
+
     </table>
     </body>
     <a href="/logout/">Logout</a>
-    <a href="/">Back</a>
+    <a href="/messageHome/">Back</a>
 {% endblock %}
