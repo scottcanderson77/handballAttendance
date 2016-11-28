@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to View Reports {{ user.username }} !!!</p>
+        <table border="1">
+        <thead>
+        <tr>
+            <th>Report</th>
+            <th>Folder Category</th>
+        </tr>
+        </thead>
+
+        <tbody>
+         {% for report in reports %}
+            <tr>
+            {% if not user.username == current_user  %}
+
+            <td>{{ report.title }} </td>
+                <td><form method="post" action="." enctype="multipart/form-data"><select name="folders">
+
+                    {% for folder in folders %}
+
+                    <option value={{ folder.title }}>{{ folder.title }}</option>
+                    {% endfor %}
+
+
+                    <input type="submit" value="Add">
+
+                    </select>
+                    </form>
+                </td>
+
+            {% endif %}
+            </tr>
+        {% endfor %}
+          </tbody>
+    </table>
+        <a href="/createFolder/">Create Folder</a>
+        <br>
+        <a href="/viewFolder/">View Folders</a>
+<br>
+    <a href="/logout/">Logout</a>
+{% endblock %}

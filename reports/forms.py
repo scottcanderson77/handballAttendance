@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 from .models import report
+from .models import folder
 
 class ReportForm(forms.ModelForm):
     title = forms.CharField()
@@ -13,4 +14,7 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = report
         fields = ('short_description', 'document',)
+
+class FolderForm(forms.Form):
+    title = forms.CharField()
 

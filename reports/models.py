@@ -18,3 +18,9 @@ class report(models.Model):
 
     def __str__(self):
         return self.name
+
+class folder(models.Model):
+    title = models.CharField(max_length=200, unique=True)
+    added_reports = models.ForeignKey(report)
+    def __str__(self):
+        return self.title

@@ -39,10 +39,36 @@ def createReport(request):
         variables,
     )
 
+@csrf_exempt
+def createFolder(request):
+    if request.method == 'POST':
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            # form.save(commit=True)
+            folder_object = folder.objects.create(
+                title=form.cleaned_data['title'],
+            )
+    else:
+        form = FolderForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+
+    return render_to_response(
+        'reports/createFolder.html',
+        variables,
+    )
+def viewFolder(request):
+    folders = folder.objects.all()
+    return render(request, 'reports/viewFolders.html', {'folders': folders})
+
 def viewReports(request):
+
     user = request.user
     reports = report.objects.all().filter(is_public="True")
-    return render(request, 'reports/viewReports.html', {})
+    folders = folder.objects.all()
+    return render(request, 'reports/viewReports.html', {'user': user, 'reports': reports, 'folders':folders})
 
 def viewYourReports(request):
     user = request.user
