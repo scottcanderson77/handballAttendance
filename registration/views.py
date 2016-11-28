@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.shortcuts import render_to_response, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth.models import User, Group
+import json
 
 @csrf_exempt
 def register(request):
@@ -17,7 +18,7 @@ def register(request):
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
-                email=form.cleaned_data['email']
+                email=form.cleaned_data['email'],
             )
 
             return HttpResponseRedirect('/register/success/')
@@ -45,10 +46,12 @@ def logout_page(request):
 
 @login_required
 def home(request):
+    isSuperUser = False
+    if request.user.is_superuser: isSuperUser = True
 
     return render_to_response(
         'home.html',
-        {'user': request.user}
+        {'user': request.user, 'SM' : isSuperUser}
     )
 
 @csrf_exempt
@@ -63,7 +66,6 @@ def createGroup(request):
             form.save(commit=True)
             group.user_set.add(user)
             count = Group.objects.count()
-            print(count)
 
         return HttpResponseRedirect('/allusers/' + str(count))
     else:
@@ -76,6 +78,30 @@ def createGroup(request):
         'createGroup.html',
         variables,
     )
+
+def changeUserRole(request):
+    current_user = request.user.username
+    users = User.objects.all()
+    return render(request, 'registration/UserRoles.html', {'current_user' : current_user, 'users' : users})
+
+@csrf_exempt
+def updatePrivilege(request):
+    username = request.POST.get('username')
+    isSM = request.POST.get('isSM')
+    user = User.objects.get(username=username)
+    if isSM == 'true':isSM = True
+    else:isSM = False
+
+    if isSM:user.is_superuser = True
+    else:user.is_superuser = False
+
+    user.save()
+    return HttpResponse(json.dumps(""), status=200, content_type="application/json")
+
+
+
+
+
 
 
 

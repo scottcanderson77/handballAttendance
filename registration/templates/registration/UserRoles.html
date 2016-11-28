@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <script src="../../../static_cdn/admin/js/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../static_cdn/js/addMember.js"></script>
+</head>
+<body>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Users</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            {% with user.username as uName %}
+            <tr>
+            {% if not uName == current_user  %}
+                <td id="{{ uName }}">{{ uName }}</td>
+                <td>{{ user.email }}</td>
+                {% if not user.is_superuser %}
+                    <td><button onclick="changeRole({{ uName }}, true)">Upgrade to SM</button></td>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <td><button onclick="changeRole({{ uName }}, false)">Remove SM privilege</button></td>
+                {% endif %}
+            {% endif %}
+            </tr>
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+    </table>
+<a href="/logout/">Logout</a>
+<a href="/">Back</a>
+</body>
+</html>

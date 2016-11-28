@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Sent Messages{% endblock %}
+{% block head %}Sent Messsages{% endblock %}
+{% block content %}
+    <title>All Sent Messages</title>
+    </head>
+
+    <body>
+    <form method="post" action=".">
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Search" />
+    </form>
+
+
+    {% for message in messages %}
+        <br>    <a href= '/message/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.receiver }}</h></br>
+
+    {% endfor %}
+
+    </table>
+    </body>
+    <a href="/logout/">Logout</a>
+    <a href="/messageHome/">Back</a>
+{% endblock %}

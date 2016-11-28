@@ -17,20 +17,27 @@
 
         <tbody>
         {% for user in users %}
-            {% with user.username as uName %}
-            <tr>
-            {% if not uName == current_user  %}
-                <td id="{{ uName }}">{{ uName }}</td>
-                <td>{{ user.email }}</td>
-                {% if user not in groupUsers %}
-                    <td><button onclick="addToGroup({{ uName }}, {{ g_id }})">Add</button></td>
+            {% if not user.is_superuser %}
+                {% with user.username as uName %}
+                <tr>
+                {% if not uName == current_user.username  %}
+                    <td id="{{ uName }}">{{ uName }}</td>
+                    <td>{{ user.email }}</td>
+                    {% if user not in groupUsers %}
+                        <td><button onclick="addToGroup({{ uName }}, {{ g_id }})">Add</button></td>
+                    {% endif %}
+                    {% if user in groupUsers and not current_user.is_superuser %}
+                        <td><button disabled>Already in group!</td>
+                    {% endif %}
+                    {% if user in groupUsers and current_user.is_superuser %}
+                        <td><button onclick="removeFromGroup({{ uName }}, {{ g_id }})">Remove</button></td>
+                    {% endif %}
+
+
                 {% endif %}
-                {% if user in groupUsers %}
-                    <td><button disabled>Already in group!</td>
-                {% endif %}
+                </tr>
+                {% endwith %}
             {% endif %}
-            </tr>
-            {% endwith %}
         {% endfor %}
         </tbody>
     </table>
