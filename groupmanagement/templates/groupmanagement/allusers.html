@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>All users</title>
+    <script src="../../../static_cdn/admin/js/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../static_cdn/js/addMember.js"></script>
 </head>
 <body>
     <table border="1">
@@ -15,13 +17,20 @@
 
         <tbody>
         {% for user in users %}
+            {% with user.username as uName %}
             <tr>
-            {% if not user.username == current_user  %}
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td><button>Add</button></td>
+            {% if not uName == current_user  %}
+                <td id="{{ uName }}">{{ uName }}</td>
+                <td>{{ user.email }}</td>
+                {% if user not in groupUsers %}
+                    <td><button onclick="addToGroup({{ uName }}, {{ g_id }})">Add</button></td>
+                {% endif %}
+                {% if user in groupUsers %}
+                    <td><button disabled>Already in group!</td>
+                {% endif %}
             {% endif %}
             </tr>
+            {% endwith %}
         {% endfor %}
         </tbody>
     </table>

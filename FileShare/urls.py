@@ -3,6 +3,8 @@ from django.contrib.auth.views import login
 from registration.views import *
 from groupmanagement.views import *
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
          url(r'^$', login),
@@ -13,7 +15,11 @@ urlpatterns = [
          url(r'^home/$', home),
          url(r'^createGroup/$', createGroup),
          url(r'^admin/', admin.site.urls),
-         url(r'^allusers/', displayUsers),
+         url(r'^allusers/(.*)', displayUsers),
          url(r'^YourGroups/', viewGroups),
-         url(r'^group/(.*)', groupActionsView)
+         url(r'^group/(.*)', groupActionsView),
+         url(r'^addmember/', addMember)
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

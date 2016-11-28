@@ -1,19 +1,22 @@
-from django.shortcuts import render
 # views.py
-from django import forms
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.shortcuts import render_to_response, render
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponse
+import json
+
 
 # Create your views here.
-def displayUsers(request):
+def displayUsers(request, placeholder):
     users = User.objects.all()
-    current_user = request.user.username;
-    return render(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user})
+    page_path = request.get_full_path()
+    lastOccurence = page_path.rfind('/')
+    g_id = int(page_path[lastOccurence+1:])
+    g_user_set = Group.objects.get(id=g_id).user_set.all()
+    current_user = request.user.username
+    print(g_user_set)
+    return render(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user, 'g_id' : g_id, 'groupUsers' : g_user_set})
 
 def viewGroups(request):
     current_user = request.user
@@ -25,4 +28,13 @@ def groupActionsView(request, placeholder):
     lastOccurence = page_path.rfind('/')
     g_id = int(page_path[lastOccurence+1:])
     g = Group.objects.get(id=g_id)
-    return render(request, 'groupmanagement/groupActions.html', {'name' : g.name})
+    return render(request, 'groupmanagement/groupActions.html', {'name' : g.name, 'g_id' : g_id})
+
+@csrf_exempt
+def addMember(request):
+    username = request.POST.get('username')
+    groupID = request.POST.get('groupID')
+    user = User.objects.get(username=username)
+    group = Group.objects.get(id=groupID)
+    group.user_set.add(user)
+    return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")

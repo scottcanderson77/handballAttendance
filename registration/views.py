@@ -57,12 +57,15 @@ def createGroup(request):
         user = request.user
         form = GroupForm(request.POST)
         group = form.instance
+        g = 0
         if form.is_valid():
 
             form.save(commit=True)
             group.user_set.add(user)
+            count = Group.objects.count()
+            print(count)
 
-        return HttpResponseRedirect('/allusers/')
+        return HttpResponseRedirect('/allusers/' + str(count))
     else:
         form = GroupForm()
     variables = RequestContext(request, {
