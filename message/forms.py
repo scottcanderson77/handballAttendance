@@ -22,12 +22,11 @@ class MessageForm(forms.Form):
     def clean_username(self):
         try:
             user = User.objects.get(username__iexact=self.cleaned_data['sendToUser'])
+            return self.cleaned_data['sendToUser']
         except User.DoesNotExist:
-            raise forms.ValidationError(_("The username already exists. Please try another one."))
+            raise forms.ValidationError(_("That username does not exist"))
         return self.cleaned_data['sendToUser']
 
-    def clean(self):
-        return self.cleaned_data
 
 
 class searchTitleForm(forms.Form):
@@ -36,3 +35,15 @@ class searchTitleForm(forms.Form):
             'invalid': _("This value must contain only letters, numbers and underscores.")})
     def clean(self):
         return self.cleaned_data
+
+
+class searchSenderForm(forms.Form):
+    sender = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
+            label=_("Title"), error_messages={
+            'invalid': _("This value must contain only letters, numbers and underscores.")})
+    def clean(self):
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
+        raise forms.ValidationError(_("The username already exists. Please try another one."))

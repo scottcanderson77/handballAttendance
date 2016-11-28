@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Sent Messages{% endblock %}
+{% block head %}{{ message.message_title }}{% endblock %}
+{% block content %}
+    <p>{{ message.message_body }}</p>
+    <p> Sent To: {{ message.receiver }}</p>
+    <p> By: {{ message.sender }}</p>
+    <br>
+    <a href="/checkMessage">To Recieved Messages</a> <br>
+    <a href="/allMessages/">To Sent Messages</a> <br>
+    <a href="/logout/">Logout</a>
+{% endblock %}

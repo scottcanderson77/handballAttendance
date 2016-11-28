@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Messaging{% endblock %}
-{% block head %}Messagin{% endblock %}
+{% block head %}Messaging{% endblock %}
 {% block content %}
+    <p>Welcome {{ user.username }} !!!</p>
+
     <a href="/allMessages/">Check Sent Message</a><br/>
     <a href="/checkMessage/">Check Recieved Message</a><br/>
     <a href="/createMessage/">Create New Message</a><br/>
-
+    <br/>
+    <br/>
+    <a href="/home/">Back</a><br/>
 {% endblock %}

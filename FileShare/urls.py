@@ -23,5 +23,7 @@ urlpatterns = [
          url(r'^allMessages/$', displayMessage),
          url(r'^checkMessage/$', checkMessage),
          url(r'^createMessage/$', createMessage),
+         url(r'^allMessages/(?P<message_id>[0-9]+)/$', detail, name="detail"),
+         url(r'^checkMessage/(?P<message_id>[0-9]+)/$', detail, name="detail"),
 
 ]
