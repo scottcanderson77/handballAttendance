@@ -91,5 +91,14 @@ def editReport(request, report_id):
             report = { 'form' : form}
             return render_to_response(template, report, RequestContext(request))
 
+
 def deleteReport(request, report_id):
     report.object.filter(report_id=report_id).delete()
+
+
+def searchReport(request):
+    query_string = request.GET['q']
+    results = report.objects.annotate(
+        search=SearchVector('title', 'short_description', 'detailed_description'),
+    ).filter(search=query_string).order_by('timestamp')
+    return render_to_response('reports/searchReports.html', {'results': results }, context_instance=RequestContext(request))
