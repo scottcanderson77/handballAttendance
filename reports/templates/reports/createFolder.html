@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to Create Folder {{ user.username }} !!!</p>
+    <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" name="createFolder" value="Create Folder"/>
+    </form>
+        <a href="/viewReport/">Go back to View Reports Page</a>
+        <br>
+    <a href="/logout/">Logout</a>
+
+{% endblock %}

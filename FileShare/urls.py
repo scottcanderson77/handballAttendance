@@ -23,14 +23,20 @@ urlpatterns = [
          url(r'^addmember/', addMember),
          url(r'^removeMember', removeMember),
          url(r'^createReport/$', createReport),
+         url(r'^viewReport/$', viewReports),
+         url(r'^createFolder/$', createFolder),
+         url(r'^viewFolder/$', viewFolder),
          url(r'^messageHome/$', messageHome),
          url(r'^allMessages/$', displayMessage),
          url(r'^checkMessage/$', checkMessage),
          url(r'^createMessage/$', createMessage),
          url(r'^changeUserRoles/', changeUserRole),
-         url(r'^updatePrivilege/', updatePrivilege)
+         url(r'^updatePrivilege/', updatePrivilege),
+         url(r'^allMessages/(?P<message_id>[0-9]+)/$', detail, name="detail"),
+         url(r'^checkMessage/(?P<message_id>[0-9]+)/$', detail, name="detail"),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+
 
