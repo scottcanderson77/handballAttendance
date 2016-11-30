@@ -13,6 +13,8 @@ class Message(models.Model):
     sender = models.ForeignKey(User, related_name="sender")
     receiver = models.ForeignKey(User, related_name="receiver")
 
+
+
     def __str__(self):
         return self.message_title
 

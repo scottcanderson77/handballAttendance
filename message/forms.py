@@ -16,8 +16,10 @@ class MessageForm(forms.Form):
             label=_("To User"), error_messages={
             'invalid': _("This user name doesn't exist")})
 
-    #pub_date = forms.DateTimeField(
-     #   widget=forms.DateTimeField())
+    encrypt = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+
+    #encrpyt = forms.boolean_check()
+    #pub_date = forms.DateTimeField(widget=forms.DateTimeField())
 
     def clean_username(self):
         try:
@@ -39,11 +41,16 @@ class searchTitleForm(forms.Form):
 
 class searchSenderForm(forms.Form):
     sender = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
-            label=_("Title"), error_messages={
-            'invalid': _("This value must contain only letters, numbers and underscores.")})
+            label=_("Sender"), error_messages={
+            'invalid': _("Invalid User")})
     def clean(self):
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+            user = User.objects.get(username__iexact=self.cleaned_data['sender'])
         except User.DoesNotExist:
-            return self.cleaned_data['username']
-        raise forms.ValidationError(_("The username already exists. Please try another one."))
+            return self.cleaned_data['sender']
+        raise forms.ValidationError(_("This is not a User"))
+
+class decryptForm(forms.Form):
+    privateKey = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=10000)), label=_("PrivateKey"))
+    def clean(self):
+        return self.cleaned_data

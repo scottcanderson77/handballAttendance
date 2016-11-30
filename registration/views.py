@@ -8,20 +8,27 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth.models import User, Group
+from .models import UserProfile
 import json
+from Crypto.PublicKey import RSA
+from Crypto import Random
 
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            private = RSA.generate(1024, Random.new().read)
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
-            )
 
-            return HttpResponseRedirect('/register/success/')
+            )
+            UserProfile.objects.create(user=user, publicKey=private.publickey().exportKey())
+            privStr = str(private.exportKey())
+
+            return render_to_response('success.html', {'private': private.exportKey()})
     else:
         form = RegistrationForm()
     variables = RequestContext(request, {
