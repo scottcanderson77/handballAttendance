@@ -16,8 +16,12 @@
             {% if not user.username == current_user  %}
 
             <td>{{ folder.title }} </td>
+
+                {%  for report in reports %}
                 <td>
+                {{ folder.added_reports}}
                 </td>
+                {% endfor %}
 
             {% endif %}
             </tr>

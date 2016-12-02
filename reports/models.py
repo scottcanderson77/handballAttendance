@@ -21,6 +21,6 @@ class report(models.Model):
 
 class folder(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    added_reports = models.ForeignKey(report)
+    added_reports = models.ManyToManyField(report)
     def __str__(self):
         return self.title

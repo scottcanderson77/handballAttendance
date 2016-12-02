@@ -39,29 +39,53 @@ def createReport(request):
         variables,
     )
 
+
+
 @csrf_exempt
 def createFolder(request):
+    reports = report.objects.all()
     if request.method == 'POST':
-        form = FolderForm(request.POST)
+        form = FolderForm(request.POST, request.FILES)
+
+        selected = request.POST.getlist('selected_report[]')
+
         if form.is_valid():
-            # form.save(commit=True)
-            folder_object = folder.objects.create(
-                title=form.cleaned_data['title'],
-            )
+            title = form.clean('title')
+            folder_object = folder.objects.create(title=title)
+            folder_object.save()
+            for report_selected in selected:
+                re = report.objects.get(title=report_selected)
+                folder_object.added_reports.add(re)
+            return render(request, 'reports/createFolder.html',{'title': title})
     else:
         form = FolderForm()
-    variables = RequestContext(request, {
-        'form': form
-    })
 
+    return render(request, 'reports/createFolder.html', {'form': form, 'reports': reports})
 
-    return render_to_response(
-        'reports/createFolder.html',
-        variables,
-    )
+# def createFolder(request):
+#     reports = report.objects.all()
+#     if request.method == 'POST':
+#         form = FolderForm(request.POST, request.FILES)
+#
+#         selected = request.POST.getlist('selected_report[]')
+#
+#         if form.is_valid():
+#             title = form.cleaned_data['title']
+#             folder_object = folder.objects.create(title=title)
+#             folder_object.save()
+#             for report_selected in selected:
+#                 re = report.objects.get(title=report_selected)
+#                 folder_object.added_reports.add(re)
+#             return render(request, 'reports/createFolder.html',{'title': title})
+#     else:
+#         form = FolderForm()
+#
+#     return render(request, 'reports/createFolder.html', {'form': form, 'reports': reports})
+
 def viewFolder(request):
     folders = folder.objects.all()
-    return render(request, 'reports/viewFolders.html', {'folders': folders})
+    reports = report.objects.all()
+    return render(request, 'reports/viewFolders.html', {'folders': folders, 'reports':reports})
 
 def viewReports(request):
 

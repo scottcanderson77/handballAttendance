@@ -3,11 +3,15 @@
 {% block head %}Welcome to Django{% endblock %}
     {% block content %}
         <p>Welcome to Create Folder {{ user.username }} !!!</p>
-    <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form method="post" action="/viewFolder/" enctype="multipart/form-data">{% csrf_token %}
         <table border="0">
             {{ form.as_table }}
         </table>
         <input type="submit" name="createFolder" value="Create Folder"/>
+         {% for report in reports %}
+             <input type="checkbox" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }}
+
+                    {% endfor %}
     </form>
         <a href="/viewReport/">Go back to View Reports Page</a>
         <br>

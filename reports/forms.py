@@ -18,3 +18,13 @@ class ReportForm(forms.ModelForm):
 class FolderForm(forms.Form):
     title = forms.CharField()
 
+    def clean(self):
+        try:
+            folder.objects.get(title=self.cleaned_data['title'])
+            # if we get this far, we have an exact match for this form's data
+            raise forms.ValidationError("Exists already!")
+        except folder.DoesNotExist:
+            # because we didn't get a match
+            pass
+        return self.cleaned_data
+
