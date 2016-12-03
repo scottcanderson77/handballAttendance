@@ -51,6 +51,14 @@ class searchSenderForm(forms.Form):
         raise forms.ValidationError(_("This is not a User"))
 
 class decryptForm(forms.Form):
-    privateKey = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=10000)), label=_("PrivateKey"))
+    privateKey = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=100000)), label=_("PrivateKey"))
+
+    def clean(self):
+        return self.cleaned_data
+
+
+class DeleteForm(forms.Form):
+    delete = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+
     def clean(self):
         return self.cleaned_data

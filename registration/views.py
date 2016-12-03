@@ -10,8 +10,10 @@ from django.template import RequestContext
 from django.contrib.auth.models import User, Group
 from .models import UserProfile
 import json
+import base64
 from Crypto.PublicKey import RSA
 from Crypto import Random
+import binascii
 
 @csrf_exempt
 def register(request):
@@ -26,9 +28,15 @@ def register(request):
 
             )
             UserProfile.objects.create(user=user, publicKey=private.publickey().exportKey())
-            privStr = str(private.exportKey())
+            print(private.exportKey())
+            priv = private.exportKey('PEM')
+            priv_KEY = binascii.b2a_qp(priv).decode('latin_1')
+            print(priv_KEY)
+            file = open("privateKeyDowload.txt","w")
+            file.write(str(priv))
+            privateKeyDownload(request, priv)
 
-            return render_to_response('success.html', {'private': private.exportKey()})
+            return render_to_response('success.html', {'private': priv_KEY})
     else:
         form = RegistrationForm()
     variables = RequestContext(request, {
@@ -106,6 +114,13 @@ def updatePrivilege(request):
     return HttpResponse(json.dumps(""), status=200, content_type="application/json")
 
 
+@csrf_exempt
+def privateKeyDownload(request, priv):
+    print("scott")
+    response = HttpResponse(priv)
+    response['content_type'] = 'application/txt'
+    response['Content-Disposition'] = 'attachment; filename=myfile.zip'
+    return response
 
 
 

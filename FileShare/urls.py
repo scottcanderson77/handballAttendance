@@ -34,6 +34,8 @@ urlpatterns = [
          url(r'^updatePrivilege/', updatePrivilege),
          url(r'^allMessages/(?P<message_id>[0-9]+)/$', detail, name="detail"),
          url(r'^checkMessage/(?P<message_id>[0-9]+)/$', detail, name="detail"),
+         url(r'^deleteMessage/(?P<message_id>[0-9]+)/$', deleteMessage, name="delete"),
+
 ]
 
 if settings.DEBUG:

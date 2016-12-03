@@ -24,12 +24,14 @@
 
 
     {% for message in messages %}
-        <br>    <a href= '/checkMessage/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.sender }}</h></br>
-
+        <br>    <a href= '/checkMessage/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.sender }}</h></br
     {% endfor %}
-
     </table>
+    <br>
+    <input type="submit" value="Delete" />
     </body>
+    <br>
+    <br>
     <a href="/logout/">Logout</a>
     <a href="/messageHome/">Back</a>
 {% endblock %}

@@ -5,12 +5,13 @@
     <p>{{ message.message_body }}</p>
     <p> Sent To: {{ message.receiver }}</p>
     <p> By: {{ message.sender }}</p>
-    <p> {{ form.as_table}}</p>
     <form method="post" action=".">
+    <p> Private Key: {{ form.privateKey }}</p>
     <input type="submit" value="Decrypt" />
     </form>
     <p> {{ decrypt }}</p>
     </br>
+    <a href="/deleteMessage/{{ message.id }}"> Delete Message</a><br>
     <a href="/checkMessage">To Recieved Messages</a> <br>
     <a href="/allMessages/">To Sent Messages</a> <br>
     <a href="/logout/">Logout</a>

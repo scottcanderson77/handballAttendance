@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from .models import Message
-from .forms import *
+from .forms import DeleteForm, searchSenderForm, searchTitleForm, MessageForm, decryptForm
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from registration import *
+from django.contrib.auth.models import User
 from registration.models import UserProfile
 from message.templates import *
-from Crypto.PublicKey import RSA
+from Crypto.PublicKey import *
 from Crypto import Random
-
+import ast
+import binascii
 # Create your views here.
 
 
@@ -22,15 +24,26 @@ def createMessage(request):
         if form.is_valid():
             print(form.cleaned_data['encrypt'])
             pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
-            print(pubKey)
-            encoder = RSA.importKey(pubKey)
+
             if form.cleaned_data['encrypt'] == True:
                 pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
+                print(pubKey)
+                pubKeyOb = bytes(pubKey, 'utf-8')
+                pubKeyOb = RSA.importKey(pubKey)
+                print(pubKeyOb)
+                print(type(pubKeyOb))
+                print(pubKeyOb.e)
+                print(pubKeyOb.n)
+                body = bytes(form.cleaned_data['body'], 'utf-8')
+                print(body)
+                body = pubKeyOb.encrypt(body, 32)
+                print(body)
+
                 message = Message.objects.create(
                     receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
                     sender=user,  # User.objects.get(username__iexact=request.user),
                     message_title=form.cleaned_data['title'],
-                    message_body=encoder.encrypt(form.cleaned_data['title'].encode('utf-8'), 32),
+                    message_body= body
 
                 )
             if form.cleaned_data['encrypt'] == False:
@@ -80,6 +93,8 @@ def checkMessage(request):
     if request.method == 'POST':
         titleForm = searchTitleForm(request.POST)
         senderForm = searchSenderForm(request.POST)
+        dForm = DeleteForm(request.POST)
+
 
         if titleForm.is_valid(): #and not senderForm.is_valid():
               title = titleForm.cleaned_data['title']
@@ -109,7 +124,9 @@ def checkMessage(request):
     else:
         titleForm = searchTitleForm()
         senderForm = searchSenderForm()
-    variables = RequestContext(request, {'titleForm':titleForm, 'senderForm': senderForm})
+        dFrom = DeleteForm()
+
+    variables = RequestContext(request, {'titleForm':titleForm, 'senderForm': senderForm, 'deleteForm':DeleteForm})
     messages = []
     messages = Message.objects.filter(receiver=request.user)
     return render_to_response('checkMessage.html', {"messages": messages}, variables, )
@@ -127,9 +144,21 @@ def detail(request, message_id):
     if request.method == 'POST':
         form = decryptForm(request.POST)
         if (form.is_valid()):
-            decoder = RSA.importKey(form.cleaned_data['privateKey'])
-            decrypt=decoder(message.message_body)
+            temp = (form.cleaned_data['privateKey'])
+            print(temp)
+            temp = binascii.a2b_qp(temp.encode('latin_1'))
+            #print(temp)
+            privateKey = RSA.importKey(temp)
+
+            decrypted=privateKey.decrypt((str(message.message_body)))
     else:
         form = decryptForm()
-        decrypt = "nothing decrypted"
-    return render_to_response('messageDetail.html', {'message': message, 'form':form, 'decrypt':decrypt})
+        decrypted = "nothing decrypted"
+    return render_to_response('messageDetail.html', {'message': message, 'form':form, 'decrypt':decrypted})
+
+@csrf_exempt
+def deleteMessage(request, message_id):
+    if Message.objects.get(pk = message_id).delete():
+        return render_to_response('messageHome.html')
+    else:
+        return render_to_response('messageHome.html')
