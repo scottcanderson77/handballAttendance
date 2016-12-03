@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to View Reports {{ user.username }} !!!</p>
+        <table border="1">
+        <thead>
+        <tr>
+            <th>Report</th>
+        </tr>
+        </thead>
+
+        <tbody>
+{#        <tr> {{ reports.title }}</tr>#}
+<tr><td> {{ reports.title }}</td></tr>
+                <tr><td> {{ rs.title }} </td></tr>
+                <tr><td>{{ rs.timestamp }}</td></tr>
+                <tr><td>{{ rs.short_description }}</td></tr>
+                <tr><td>{{ rs.detailed_description }}</td></tr>
+                <tr><td>{{ rs.is_encrypted }}</td></tr>
+                <tr><td>{{ rs.is_private }}</td></tr>
+                <tr><td>{{ rs.document }}</td><tr>
+                <tr><td> {{ rs.username_id_id }}</td></tr>
+{#             {% endif %}#}
+
+            </tr>
+          </tbody>
+    </table>
+        {% if user.is_superuser == True or rs.username_id_id == user.id %}
+            <form action="/editReport/" method="post">{% csrf_token %}
+                <input type="hidden" name="title" value="{{ rs.title }}"/>
+                <input type="hidden" name="short" value="{{ rs.short_description }}"/>
+                <input type="hidden" name="detailed" value="{{ rs.detailed_description }}"/>
+                <input type="hidden" name="private" value="{{ rs.is_private }}"/>
+
+
+                <td><input type="submit" value="Edit Report"/> </td>
+            </form>
+
+            <form action="/deleteReport/" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ rs.id }}"/>
+
+                <td><input type="submit" value="Delete Report"/> </td>
+            </form>
+         {% endif %}
+        <a href="/createFolder/">Create Folder</a>
+        <br>
+        <a href="/viewFolder/">View Folders</a>
+<br>
+    <a href="/logout/">Logout</a>
+{% endblock %}

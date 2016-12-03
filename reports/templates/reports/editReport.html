@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to View Reports {{ user.username }} !!!</p>
+        <table border="1">
+        <thead>
+        </thead>
+
+        <tbody>
+{#        <tr> {{ reports.title }}</tr>#}
+
+                <form action="/editReport/" method="post">{% csrf_token %} {{ rs.title }}
+                <input type="text" value="{{ title }}" name="title"/>
+                <input type="text" value="{{ short }}" name="short"/>
+                <input type="text" value="{{ detailed }}" name="detailed"/>
+                {% if is_private == True %}
+                    <label>Is Private</label><input type="checkbox" name="private" value="private" checked/>
+                    {% else  %}
+                    <label>Is Private</label><input type="checkbox" name="private" value="private"/>
+                {% endif %}
+                <input type="hidden" value="{{ title }}" name="original"/>
+                <input type="submit" value="updated" name="updated"/>
+                </form>
+
+{#             {% endif %}#}
+
+            </tr>
+          </tbody>
+    </table>
+        <a href="/createFolder/">Create Folder</a>
+        <br>
+        <a href="/viewFolder/">View Folders</a>
+<br>
+    <a href="/logout/">Logout</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to Delete Folder(s) {{ user.username }} !!!</p>
+    <form method="post" action="/deleteFolder/" enctype="multipart/form-data">{% csrf_token %}
+        <table border="0">
+        </table>
+        <input type="submit" name="deleteFolder" value="Delete"/>
+
+         {% for folder in folders %}
+             <input type="checkbox" name="selected_folder[]" value="{{ folder.title }}"/> {{ folder.title }}
+
+                    {% endfor %}
+    </form>
+        <a href="/viewReport/">Go back to View Reports Page</a>
+        <br>
+    <a href="/logout/">Logout</a>
+
+{% endblock %}

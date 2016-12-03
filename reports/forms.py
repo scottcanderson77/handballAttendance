@@ -5,15 +5,14 @@ from .models import folder
 
 class ReportForm(forms.ModelForm):
     title = forms.CharField()
-    timestamp = forms.DateTimeField()
     short_description = forms.CharField(max_length=30)
     detailed_description = forms.CharField(max_length=200)
-    status_state = forms.CharField(max_length=10)
+    is_private = forms.BooleanField(required=False)
     location = forms.CharField(max_length=30)
-    is_encrypted = forms.CharField(max_length=30)
+    is_encrypted = forms.BooleanField(required=False)
     class Meta:
         model = report
-        fields = ('short_description', 'document',)
+        fields = ('title','detailed_description','short_description', 'document','is_private', 'location', 'is_encrypted', 'username_id' )
 
 class FolderForm(forms.Form):
     title = forms.CharField()
@@ -27,4 +26,5 @@ class FolderForm(forms.Form):
             # because we didn't get a match
             pass
         return self.cleaned_data
+
 

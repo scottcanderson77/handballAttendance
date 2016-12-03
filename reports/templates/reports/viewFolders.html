@@ -7,19 +7,20 @@
         <thead>
         <tr>
             <th>Folder</th>
+            <th>Report</th>
         </tr>
         </thead>
 
         <tbody>
          {% for folder in folders %}
             <tr>
-            {% if not user.username == current_user  %}
+            {% if folder.username_id_id == user.id  %}
 
             <td>{{ folder.title }} </td>
 
-                {%  for report in reports %}
+                {% for added in folder.added_reports.all  %}
                 <td>
-                {{ folder.added_reports}}
+                    {{ added.title }}
                 </td>
                 {% endfor %}
 
@@ -29,6 +30,7 @@
           </tbody>
     </table>
         <a href="/createFolder/">Create Folder</a>
+        <a href="/renameFolder/">Rename a Folder</a>
 
 <br>
     <a href="/logout/">Logout</a>
