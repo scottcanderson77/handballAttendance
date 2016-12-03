@@ -7,12 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reports', '0001_initial'),
+        ('message', '0003_remove_message_date'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='report',
-            name='uploaded_at',
+        migrations.AlterField(
+            model_name='message',
+            name='message_body',
+            field=models.CharField(max_length=1000000),
         ),
     ]

@@ -16,29 +16,23 @@ def createReport(request):
     if request.method == 'POST':
         form = ReportForm(request.POST, request.FILES)
         if form.is_valid():
-            newsubmit = form.save(commit=False)
-            newsubmit.user
-
-            # checked = False
-            # encrypted = False
-            # if request.POST.get("is_private", False):
-            #     checked = True
-            #     encrypted = True
-            # if request.POST.get("is_encrypted", False):
-            #     encrypted = True
-            #
-            # report_object = report.objects.create(
-            #     title=form.cleaned_data['title'],
-            #     timestamp=timezone.now(),
-            #     short_description=form.cleaned_data['short_description'],
-            #     detailed_description=form.cleaned_data['detailed_description'],
-            #     is_private = checked,
-            #     location=form.cleaned_data['location'],
-            #     is_encrypted = encrypted,
-            #     username_id= request.user
-            #
-            # )
-            # report_object.save()
+            checked = False
+            encrypted = False
+            if request.POST.get("is_private", False):
+                checked =True
+                encrypted = True
+            if request.POST.get("is_encrypted", False):
+                encrypted = True
+            newdoc = report(title=form.cleaned_data['title'],
+                timestamp=timezone.now(),
+                short_description=form.cleaned_data['short_description'],
+                detailed_description=form.cleaned_data['detailed_description'],
+                is_private = checked,
+                location=form.cleaned_data['location'],
+                is_encrypted = encrypted,
+                document = request.FILES['document'],
+                username_id= request.user)
+            newdoc.save()
 
     else:
         form = ReportForm()
