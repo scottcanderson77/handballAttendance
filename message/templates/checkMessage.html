@@ -13,14 +13,15 @@
         <input type="submit" value="Search" />
     </form>
     </body>
-    <body>
-    <form method="post" action=".">
-        <table border="0">
-            {{ senderForm.as_table }}
-        </table>
-        <input type="submit" value="Search" />
-    </form>
-    </body>
+
+{#    <body>#}
+{#    <form method="post" action=".">#}
+{#        <table border="0">#}
+{#            {{ senderForm.as_table }}#}
+{#        </table>#}
+{#        <input type="submit" value="Search" />#}
+{#    </form>#}
+{#    </body>#}
 
 
     {% for message in messages %}
@@ -28,7 +29,6 @@
     {% endfor %}
     </table>
     <br>
-    <input type="submit" value="Delete" />
     </body>
     <br>
     <br>

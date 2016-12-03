@@ -15,9 +15,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Message',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('message_title', models.CharField(max_length=50)),
-                ('message_body', models.CharField(max_length=500)),
+                ('message_body', models.CharField(max_length=1000000)),
                 ('receiver', models.ForeignKey(related_name='receiver', to=settings.AUTH_USER_MODEL)),
                 ('sender', models.ForeignKey(related_name='sender', to=settings.AUTH_USER_MODEL)),
             ],

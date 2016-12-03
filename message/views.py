@@ -23,9 +23,10 @@ def createMessage(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data['encrypt'])
-            pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
+            #pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
 
             if form.cleaned_data['encrypt'] == True:
+                print(form.cleaned_data['sendToUser'])
                 pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
                 print(pubKey)
                 pubKeyOb = bytes(pubKey, 'utf-8')
