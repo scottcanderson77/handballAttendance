@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.db import models, migrations
-import datetime
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reports', '0006_folder'),
+        ('message', '0002_message_date'),
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='folder',
-            old_name='name',
-            new_name='title',
+        migrations.RemoveField(
+            model_name='message',
+            name='date',
         ),
     ]

@@ -3,9 +3,10 @@
 {% block head %}Create Messsage{% endblock %}
 {% block content %}
     <form method="post" action=".">
-        <table border="0">
-            {{ form.as_table }}
-        </table>
+        <p> Title   {{ form.title }}</p>
+        <p> Body    {{ form.body }}</p>
+        <p> Send To {{ form.sendToUser }}</p>
+        <p> Encrypt {{ form.encrypt }}</p>
         <input type="submit" value="Send" />
     </form>
     <a href="/messageHome/">back</a>

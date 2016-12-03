@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from .models import Message
-from .forms import *
+from .forms import DeleteForm, searchSenderForm, searchTitleForm, MessageForm, decryptForm
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from registration import *
+from django.contrib.auth.models import User
+from registration.models import UserProfile
 from message.templates import *
-
-
+from Crypto.PublicKey import *
+from Crypto import Random
+import ast
+import binascii
 # Create your views here.
 
 
@@ -18,11 +22,37 @@ def createMessage(request):
         user = request.user
         form = MessageForm(request.POST)
         if form.is_valid():
-            message = Message.objects.create(
-                receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser ']),
-                sender=user,  # User.objects.get(username__iexact=request.user),
-                message_title=form.cleaned_data['title'],
-                message_body=form.cleaned_data['body'],
+            print(form.cleaned_data['encrypt'])
+            pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
+
+            if form.cleaned_data['encrypt'] == True:
+                pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
+                print(pubKey)
+                pubKeyOb = bytes(pubKey, 'utf-8')
+                pubKeyOb = RSA.importKey(pubKey)
+                print(pubKeyOb)
+                print(type(pubKeyOb))
+                print(pubKeyOb.e)
+                print(pubKeyOb.n)
+                body = bytes(form.cleaned_data['body'], 'utf-8')
+                print(body)
+                body = pubKeyOb.encrypt(body, 32)
+                print(body)
+
+                message = Message.objects.create(
+                    receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
+                    sender=user,  # User.objects.get(username__iexact=request.user),
+                    message_title=form.cleaned_data['title'],
+                    message_body= body
+
+                )
+            if form.cleaned_data['encrypt'] == False:
+                message = Message.objects.create(
+                    receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
+                    sender=user,  # User.objects.get(username__iexact=request.user),
+                    message_title=form.cleaned_data['title'],
+                    message_body=form.cleaned_data['body'],
+
             )
 
         return HttpResponseRedirect('/messageHome/')
@@ -62,20 +92,41 @@ def checkMessage(request):
     messages = []
     if request.method == 'POST':
         titleForm = searchTitleForm(request.POST)
-        #senderForm = searchSenderForm(request.POST)
-        if (titleForm.is_valid()):
-            title = titleForm.cleaned_data['title']
+        senderForm = searchSenderForm(request.POST)
+        dForm = DeleteForm(request.POST)
 
-            if (title != None):
-                messages = Message.objects.filter(sender=request.user, message_title=title)
-            else:
-                messages = Message.objects.filter(reciever=request.user)
 
-            return render_to_response('checkMessage.html', {"messages": messages})
+        if titleForm.is_valid(): #and not senderForm.is_valid():
+              title = titleForm.cleaned_data['title']
+
+              messages = Message.objects.filter(receiver=request.user, message_title=title)
+
+              return render_to_response('checkMessage.html', {"messages": messages})
+
+         # if senderForm.is_valid(): # and senderForm.is_valid():
+         #
+         #    sender = senderForm.cleaned_data['sender']
+         #
+         #    messages = Message.objects.filter(receiver=request.user, sender=User.objects.get(username__iexact=sender))
+         #
+         #    return render_to_response('checkMessage.html', {"messages": messages})
+
+        # if titleForm.is_valid() and senderForm.is_valid():
+        #
+        #     title = titleForm.cleaned_data['title']
+        #
+        #     sender = senderForm.cleaned_data['sender']
+        #
+        #     messages = Message.objects.filter(receiver=request.user, sender=User.objects.get(username__iexact=sender),message_title=title)
+        #
+        #     return render_to_response('checkMessage.html', {"messages": messages})
+
     else:
         titleForm = searchTitleForm()
         senderForm = searchSenderForm()
-    variables = RequestContext(request, {'titleForm': titleForm},)# {'senderForm': senderForm})
+        dFrom = DeleteForm()
+
+    variables = RequestContext(request, {'titleForm':titleForm, 'senderForm': senderForm, 'deleteForm':DeleteForm})
     messages = []
     messages = Message.objects.filter(receiver=request.user)
     return render_to_response('checkMessage.html', {"messages": messages}, variables, )
@@ -86,6 +137,45 @@ def messageHome(request):
     message = Message.objects.all()
     return render_to_response('messageHome.html', {'user': request.user})
 
+@csrf_exempt
 def detail(request, message_id):
     message = Message.objects.get(pk = message_id)
-    return render_to_response('messageDetail.html', {'message': message})
+    decrypt = "nothing decrypted"
+    if request.method == 'POST':
+        form = decryptForm(request.POST)
+        if (form.is_valid()):
+            # temp = (form.cleaned_data['privateKey'])
+            # print(temp)
+            # temp = binascii.a2b_qp(temp.encode('latin_1'))
+            # #print(temp)
+            # privateKey = RSA.importKey(temp)
+            # decrypted=privateKey.decrypt((str(message.message_body)))
+            temp = bytes(message.message_body, 'utf-8')
+            private = UserProfile.objects.get(user__username__iexact=request.user.username).privateKey
+            pub = UserProfile.objects.get(user__username__iexact=request.user.username).publicKey
+            #print(private)
+
+            #privateOb = bytes(private, 'utf-8')
+            #print(type (privateOb))
+            #privKeyOb = RSA.importKey(privateOb)
+            #print(privateOb)
+            body = bytes(message.message_body, 'utf-8')
+            pub.decrypt(body)
+            print(body)
+            #print(privKeyOb.decrypt(body))
+            #decrypted = privKeyOb.decrypt(body)
+            #print(decrypted)
+            #print("yes")
+            #decrypted = "helo"
+    else:
+        form = decryptForm()
+        decrypted = "nothing decrypted"
+    return render_to_response('messageDetail.html', {'message': message, 'form':form, 'decrypt':decrypted})
+
+
+@csrf_exempt
+def deleteMessage(request, message_id):
+    if Message.objects.get(pk = message_id).delete():
+        return render_to_response('messageHome.html')
+    else:
+        return render_to_response('messageHome.html')
