@@ -154,19 +154,14 @@ def detail(request, message_id):
             private = UserProfile.objects.get(user__username__iexact=request.user.username).privateKey
             pub = UserProfile.objects.get(user__username__iexact=request.user.username).publicKey
             #print(private)
-
             #privateOb = bytes(private, 'utf-8')
-            #print(type (privateOb))
-            #privKeyOb = RSA.importKey(privateOb)
             #print(privateOb)
+            #print(type (privateOb))
+            privKeyOb = RSA.importKey(private)
             body = bytes(message.message_body, 'utf-8')
-            pub.decrypt(body)
-            print(body)
-            #print(privKeyOb.decrypt(body))
-            #decrypted = privKeyOb.decrypt(body)
-            #print(decrypted)
-            #print("yes")
-            #decrypted = "helo"
+            priv = privKeyOb.decrypt(ast.literal_eval(str(message.message_body)))
+            print(priv)
+            decrypted = priv
     else:
         form = decryptForm()
         decrypted = "nothing decrypted"
