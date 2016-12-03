@@ -27,11 +27,13 @@ def register(request):
                 email=form.cleaned_data['email'],
 
             )
-            UserProfile.objects.create(user=user, publicKey=private.publickey().exportKey())
+            print(private)
             print(private.exportKey())
+            UserProfile.objects.create(user=user, privateKey=private.exportKey(), publicKey=private.publickey().exportKey())
+            #print(private.exportKey())
             priv = private.exportKey('PEM')
             priv_KEY = binascii.b2a_qp(priv).decode('latin_1')
-            print(priv_KEY)
+            #print(priv_KEY)
             file = open("privateKeyDowload.txt","w")
             file.write(str(priv))
             privateKeyDownload(request, priv)

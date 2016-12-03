@@ -8,6 +8,7 @@ from message.models import *
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     publicKey = models.CharField(max_length=1024)
+    privateKey = models.CharField(max_length=1024, default=1)
 
     def __str__(self):
           return "%s's profile" % self.user

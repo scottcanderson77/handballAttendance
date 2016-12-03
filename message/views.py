@@ -144,17 +144,34 @@ def detail(request, message_id):
     if request.method == 'POST':
         form = decryptForm(request.POST)
         if (form.is_valid()):
-            temp = (form.cleaned_data['privateKey'])
-            print(temp)
-            temp = binascii.a2b_qp(temp.encode('latin_1'))
-            #print(temp)
-            privateKey = RSA.importKey(temp)
+            # temp = (form.cleaned_data['privateKey'])
+            # print(temp)
+            # temp = binascii.a2b_qp(temp.encode('latin_1'))
+            # #print(temp)
+            # privateKey = RSA.importKey(temp)
+            # decrypted=privateKey.decrypt((str(message.message_body)))
+            temp = bytes(message.message_body, 'utf-8')
+            private = UserProfile.objects.get(user__username__iexact=request.user.username).privateKey
+            pub = UserProfile.objects.get(user__username__iexact=request.user.username).publicKey
+            #print(private)
 
-            decrypted=privateKey.decrypt((str(message.message_body)))
+            #privateOb = bytes(private, 'utf-8')
+            #print(type (privateOb))
+            #privKeyOb = RSA.importKey(privateOb)
+            #print(privateOb)
+            body = bytes(message.message_body, 'utf-8')
+            pub.decrypt(body)
+            print(body)
+            #print(privKeyOb.decrypt(body))
+            #decrypted = privKeyOb.decrypt(body)
+            #print(decrypted)
+            #print("yes")
+            #decrypted = "helo"
     else:
         form = decryptForm()
         decrypted = "nothing decrypted"
     return render_to_response('messageDetail.html', {'message': message, 'form':form, 'decrypt':decrypted})
+
 
 @csrf_exempt
 def deleteMessage(request, message_id):

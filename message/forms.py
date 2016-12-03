@@ -52,7 +52,6 @@ class searchSenderForm(forms.Form):
 
 class decryptForm(forms.Form):
     privateKey = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=100000)), label=_("PrivateKey"))
-
     def clean(self):
         return self.cleaned_data
 
