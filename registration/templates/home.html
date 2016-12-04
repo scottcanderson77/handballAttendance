@@ -1,8 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
 {% block content %}
-    <p>Welcome {{ user.username }} !!!</p>
+    <h1>Welcome {{ user.username }} !!!</h1>
     <form method="post" action=".">{% csrf_token %}
     <input type="hidden" name="next" value="groups" />
     </form>
@@ -22,5 +20,5 @@
     <a href="/YourGroups">View your groups</a><br/>
     <a href="/createReport/">Create Report</a><br/>
     <a href="/viewReport/">View Reports</a><br/>
-    <a href="/logout/">Logout</a>
+
 {% endblock %}
