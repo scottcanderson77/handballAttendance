@@ -9,7 +9,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     publicKey = models.CharField(max_length=1024)
     privateKey = models.CharField(max_length=1024, default=1)
-
+    sentMessagesScene= models.IntegerField(default=0)
+    recMessagesScene = models.IntegerField(default=0)
     def __str__(self):
           return "%s's profile" % self.user
 

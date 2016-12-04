@@ -4,8 +4,8 @@
 {% block content %}
     <p>Welcome {{ user.username }} !!!</p>
 
-    <a href="/allMessages/">Check Sent Message</a><br/>
-    <a href="/checkMessage/">Check Recieved Message</a><br/>
+    <a href="/allMessages/">Check Sent Message</a> Outbox {{ newS }}/{{ oldS }} (New)<br/>
+    <a href="/checkMessage/">Check Recieved Message</a> Inbox {{ newR }}/{{ oldR }} (New)<br/>
     <a href="/createMessage/">Create New Message</a><br/>
     <br/>
     <br/>

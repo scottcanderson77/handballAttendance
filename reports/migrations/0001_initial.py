@@ -15,23 +15,23 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='folder',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('title', models.CharField(unique=True, max_length=200)),
+                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('title', models.CharField(max_length=200, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name='report',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('title', models.CharField(default='title', max_length=200)),
+                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('title', models.CharField(max_length=200, default='title')),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('short_description', models.CharField(max_length=30)),
                 ('detailed_description', models.CharField(max_length=200)),
                 ('is_private', models.BooleanField(default='False')),
-                ('location', models.CharField(default='Virginia', max_length=100)),
+                ('location', models.CharField(max_length=100, default='Virginia')),
                 ('is_encrypted', models.BooleanField(default='False')),
                 ('document', models.FileField(default='document', upload_to='documents/')),
-                ('username_id', models.ForeignKey(null=True, blank=True, to=settings.AUTH_USER_MODEL)),
+                ('username_id', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
         ),
         migrations.AddField(
@@ -42,6 +42,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='folder',
             name='username_id',
-            field=models.ForeignKey(null=True, blank=True, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
         ),
     ]
