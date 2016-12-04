@@ -14,9 +14,11 @@
          {% for report in reports %}
             <tr></tr>
              {% if report.username_id_id == user.id %}
-                 <form action="/addReport/" method="post">{% csrf_token %}
+                 <form action="/addReports/" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ g_id}}"/>
+                <td><input type="text" name ="selected_report" id= "title" value="{{ report.title }}"/> </td>
+                     <td><input type="submit" value="Add Report to Group"/> </td>
 
-                <td><input type="submit" name ="selected_report" id= "title" value="{{ report.title }}"/> </td>
 {#                 <td><input type="submit" name = "{{ report.title }}" id= "title" value="title"/> </td>#}
                  </form>
              {% endif %}
@@ -25,9 +27,6 @@
         {% endfor %}
           </tbody>
     </table>
-        <a href="/createFolder/">Create Folder</a>
-        <br>
-        <a href="/viewFolder/">View Folders</a>
 <br>
     <a href="/logout/">Logout</a>
 {% endblock %}

@@ -7,7 +7,12 @@
 <body>
 <ul>
     <li><a href="/allusers/{{ g_id }}">Add member</a></li>
-    <li><a href="/addReports/{{ g_id }}"></a></li>
+    <form action="/addReports/" method="post"> {% csrf_token %}
+        <input type="hidden" name="id" value="{{ g_id }}"/>
+                <input type="hidden" name="hid" value="{{ g_id }}"/>
+
+        <input type="submit" value="Add Reports"/>
+    </form>
 </ul>
 </body>
 </html>

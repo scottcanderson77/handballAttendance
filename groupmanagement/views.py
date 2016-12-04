@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
+from reports.models import *
+from groupmanagement.models import GroupReports
 import json
 
 
@@ -51,3 +53,17 @@ def removeMember(request):
     group = Group.objects.get(id=groupID)
     group.user_set.remove(user)
     return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")
+
+def addReports(request):
+    user = request.user
+    reports = report.objects.all().filter(username_id=user)
+    if request.POST.get('hid'):
+        g_id = request.POST.get('id')
+    if request.POST.get('selected_report'):
+        g_id = Group.objects.get(id=request.POST.get('id'))
+        addedReport = report.objects.get(title=request.POST.get('selected_report'))
+        groupR = GroupReports.objects.create(group=g_id, report_document=addedReport)
+
+    return render(request, 'groupmanagement/addReports.html', {'reports':reports, 'user': user, 'g_id':g_id})
+
+
