@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to View Reports {{ user.username }} !!!</p>
+        <table border="1">
+        <thead>
+        <tr>
+            <th>Report</th>
+        </tr>
+        </thead>
+
+        <tbody>
+         {% for report in reports %}
+            <tr></tr>
+             {% if report.username_id_id == user.id %}
+                 <form action="/addReport/" method="post">{% csrf_token %}
+
+                <td><input type="submit" name ="selected_report" id= "title" value="{{ report.title }}"/> </td>
+{#                 <td><input type="submit" name = "{{ report.title }}" id= "title" value="title"/> </td>#}
+                 </form>
+             {% endif %}
+
+            </tr>
+        {% endfor %}
+          </tbody>
+    </table>
+        <a href="/createFolder/">Create Folder</a>
+        <br>
+        <a href="/viewFolder/">View Folders</a>
+<br>
+    <a href="/logout/">Logout</a>
+{% endblock %}

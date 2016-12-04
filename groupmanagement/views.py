@@ -28,6 +28,7 @@ def viewGroups(request):
 
 def groupActionsView(request, placeholder):
     page_path = request.get_full_path()
+
     lastOccurence = page_path.rfind('/')
     g_id = int(page_path[lastOccurence+1:])
     g = Group.objects.get(id=g_id)
