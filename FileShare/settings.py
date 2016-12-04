@@ -25,7 +25,7 @@ SECRET_KEY = ')@_%!*p95az$-evhk!%wp^$=dsngk-)9k#tl-4g4%9ty0of1dy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['uber-reports.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fileshared',
+        'NAME': 'stuff',
         'USER' : 'postgres',
         'PASSWORD' : 'were1234',
         'HOST' : 'localhost',
@@ -130,8 +130,8 @@ USE_TZ = True
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-
-STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+STATIC_URL = '/static_cdn/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

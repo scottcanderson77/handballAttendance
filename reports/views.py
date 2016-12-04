@@ -43,7 +43,7 @@ def createReport(request):
                 short_description=form.cleaned_data['short_description'],
                 detailed_description=form.cleaned_data['detailed_description'],
                 is_private = checked,
-                location=form.cleaned_data['location'],
+                location= form.cleaned_data['location'],
                 is_encrypted = encrypted,
                 username_id= request.user)
             newdoc.save()
@@ -79,7 +79,7 @@ def createReport(request):
         variables,
     )
 
-
+@csrf_exempt
 def encrypt_file(key, filename):
     print(key)
     file = settings.MEDIA_ROOT + "/" + filename
@@ -118,6 +118,9 @@ def createFolder(request):
         'reports/createFolder.html',
         variables,
     )
+
+
+@csrf_exempt
 def renameFolder(request):
     folders = folder.objects.all()
     selected = request.POST.getlist('selected_folder[]')
@@ -142,6 +145,7 @@ def renameFolder(request):
         variables,
     )
 
+@csrf_exempt
 def deleteFolder(request):
     folders = folder.objects.all()
     selected = request.POST.getlist('selected_folder[]')
@@ -161,14 +165,15 @@ def deleteFolder(request):
     )
 
 
-
+@csrf_exempt
 def viewFolder(request):
     user = request.user
     folders = folder.objects.all()
     reports = folder.objects.all()
     return render(request, 'reports/viewFolders.html', {'folders': folders, 'reports':reports, 'user': user})
 
-def viewReports(request):
+@csrf_exempt
+def viewReport(request):
     user = request.user
     if user.is_superuser:
         reports = report.objects.all()
@@ -177,7 +182,8 @@ def viewReports(request):
     folders = folder.objects.all()
     return render(request, 'reports/viewReports.html', {'user': user, 'reports': reports, 'folders':folders})
 
-def viewReport(request):
+@csrf_exempt
+def viewReports(request):
     user = request.user
     title = request.POST.get("selected_report")
     rs = report.objects.get(title=title)
@@ -198,7 +204,7 @@ def viewReport(request):
     #response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
     return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user, 'files': files, 'owner': owner})
 
-
+@csrf_exempt
 def download(request, file_name):
     file_path = settings.MEDIA_ROOT + '/' + file_name
     file_wrapper = FileWrapper(open(file_path, 'rb'))
@@ -216,7 +222,7 @@ def download(request, file_name):
     return response
 
 
-
+@csrf_exempt
 def viewYourReports(request):
     user = request.user
     reports = report.objects.all().filter(username_id=user)
@@ -224,6 +230,7 @@ def viewYourReports(request):
     return render(request, 'reports/viewYourReports.html', {'reports':reports, 'user': user, 'folders':folders })
 
 
+@csrf_exempt
 def editReport(request):
     user = request.user
     title = request.POST.get("title")
@@ -246,8 +253,7 @@ def editReport(request):
 
     return render(request, 'reports/editReport.html', {'user': user, 'title': title, 'short': short, 'detailed':detailed, 'private': is_private})
 
-
-
+@csrf_exempt
 def deleteReport(request):
     user = request.user
     id = request.POST.get("id")
@@ -255,9 +261,15 @@ def deleteReport(request):
     return render(request, 'reports/viewYourReports.html', {'user':user})
 
 @csrf_exempt
-def searchReport(request):
+def searchReports(request):
     query_string = request.GET.get('q')
     results = report.objects.annotate(
         search=SearchVector('title', 'short_description', 'detailed_description'),
     ).filter(search=query_string).exclude(is_private=True).order_by('timestamp')
     return render(request,'reports/searchReports.html', {'results': results })
+
+
+@csrf_exempt
+def reportHome(request):
+    user = request.user
+    return render_to_response("reports/reportHome.html", {"user":user})

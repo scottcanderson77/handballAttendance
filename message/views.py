@@ -72,7 +72,7 @@ def displayMessage(request):
             else:
                 messages = Message.objects.filter(sender=request.user)
 
-            return render_to_response('allMessages.html', {"messages": messages})
+            return render_to_response('allMessages.html', {'messages': messages, 'form':form})
     else:
         form = searchTitleForm()
     variables = RequestContext(request, {'form': form})
@@ -81,7 +81,7 @@ def displayMessage(request):
     userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
     userPro.sentMessagesScene= (len(messages))
     userPro.save()
-    return render_to_response('allMessages.html', {"messages": messages}, variables, )
+    return render_to_response('allMessages.html', {'messages': messages}, variables,)
 
 
 @csrf_exempt
@@ -154,7 +154,7 @@ def messageHome(request):
 @csrf_exempt
 def detail(request, message_id):
     message = Message.objects.get(pk = message_id)
-    decrypt = "nothing decrypted"
+    decrypted = "nothing decrypted"
     if request.method == 'POST':
         form = decryptForm(request.POST)
         if (form.is_valid()):
