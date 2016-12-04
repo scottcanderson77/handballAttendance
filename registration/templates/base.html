@@ -1,12 +1,46 @@
+{% load staticfiles %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <title>Django Login Application |
         {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     </head>
     <body>
-        <h1>{% block head %}{% endblock %}</h1>
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href=".">FileShare</a>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+{#                        <a class="nav-link" href=".">Home <span class="sr-on"></span></a>#}
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messageHome/">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Groups</a>
+                    </li>
+
+
+                    <li class="nav-item nav-item-right">
+                        <a class="nav-link1" href="/register">Register<i class="fa fa-user" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link2" href="/logout/">Logout<i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    </li>
+
+                </ul>
+        </nav>
+        <h2>{% block head %}{% endblock %}</h2>
         {% block content %}{% endblock %}
+<script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
 
     </body>
 </html>
