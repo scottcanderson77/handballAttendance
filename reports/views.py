@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from .forms import *
 from reports.models import *
@@ -16,6 +17,7 @@ from django.core.files import File
 import os
 from django.conf import settings
 import mimetypes
+import ast
 from django.utils.encoding import smart_str
 from Crypto.PublicKey import *
 from django.db.models import Q
@@ -49,11 +51,15 @@ def createReport(request):
             for f in file:
                 if newdoc.is_encrypted == True:
                     pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
-                    pubKeyOb = bytes(pubKey, 'utf-8')
+                    #pubKeyOb = bytes(pubKey, 'utf-8')
                     pubKeyOb = RSA.importKey(pubKey)
                     newfile = Document(document=f, report_document=newdoc, name=f)
                     newfile.save()
-                    encrypt_file(pubKeyOb, str(f))
+                    enc = encrypt_file(pubKeyOb, str(newfile.document))
+                    Document.objects.filter(name=f).delete()
+                    os.remove(settings.MEDIA_ROOT + '/' + str(newfile.document))
+                    newfile2 = Document(document=enc, report_document=newdoc, name=enc)
+                    newfile2.save()
                 else:
                     newfile = Document(document=f, report_document=newdoc, name=f)
                     newfile.save()
@@ -75,20 +81,17 @@ def createReport(request):
 
 
 def encrypt_file(key, filename):
-    file = settings.MEDIA_ROOT + '/documents/' + filename
-    print(file)
-    print(type(file))
+    print(key)
+    file = settings.MEDIA_ROOT + "/" + filename
     with open(file, 'rb') as in_file:
-        with  open(file + '.enc','wb') as out_file:
-            #while True:
-            chunk = in_file.read(1000)
-            print(chunk)
-                #if len(chunk) == 0:
-                 #   break
-            chunk = bytes(chunk, 'utf-8')
-            print(chunk)
-            encrypted = key.encrypt(chunk, 32)
-            out_file.write(encrypted)
+        with  open(file + '.enc','w') as out_file:
+            chunk = in_file.read()
+            #chunk = bytes(chunk, 'utf-8')
+            #chunk = key.encrypt(chunk, 32)
+            enc_data = key.encrypt(chunk, 32)
+            out_file.write(str(enc_data))
+            file = '/documents/' + filename + '.enc'
+            return file
 
 @csrf_exempt
 def createFolder(request):
@@ -167,7 +170,10 @@ def viewFolder(request):
 
 def viewReports(request):
     user = request.user
-    reports = report.objects.all().filter(is_private="False")
+    if user.is_superuser:
+        reports = report.objects.all()
+    else:
+        reports = report.objects.all().filter(is_private="False")
     folders = folder.objects.all()
     return render(request, 'reports/viewReports.html', {'user': user, 'reports': reports, 'folders':folders})
 

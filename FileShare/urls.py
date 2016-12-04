@@ -21,6 +21,7 @@ urlpatterns = [
          url(r'^YourGroups/', viewGroups),
          url(r'^group/(.*)', groupActionsView),
          url(r'^addmember/', addMember),
+         url(r'^addReports/$', addReports),
          url(r'^removeMember', removeMember),
          url(r'^createReport/$', createReport),
          url(r'^editReport/$', editReport),
@@ -42,7 +43,7 @@ urlpatterns = [
          url(r'^allMessages/(?P<message_id>[0-9]+)/$', detail, name="detail"),
          url(r'^checkMessage/(?P<message_id>[0-9]+)/$', detail, name="detail"),
          url(r'^deleteMessage/(?P<message_id>[0-9]+)/$', deleteMessage, name="delete"),
-         url(r'^download/(?P<file_name>.+)$', download)
+         url(r'^download/(?P<file_name>.*.+)$', download)
 
 ]
 
