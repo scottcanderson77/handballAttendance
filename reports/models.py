@@ -20,6 +20,7 @@ class report(models.Model):
 class Document(models.Model):
     document = models.FileField(default='document',upload_to='documents/')
     report_document = models.ForeignKey(report, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='name')
 
 
 
