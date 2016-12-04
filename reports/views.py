@@ -51,8 +51,13 @@ def createReport(request):
                     pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
                     pubKeyOb = bytes(pubKey, 'utf-8')
                     pubKeyOb = RSA.importKey(pubKey)
-                    newfile = Document(document=f, report_document=newdoc)
+                    newfile = Document(document=f, report_document=newdoc, name=f)
                     newfile.save()
+                    encrypt_file(pubKeyOb, str(f))
+                else:
+                    newfile = Document(document=f, report_document=newdoc, name=f)
+                    newfile.save()
+
 
     else:
         form = ReportForm()
@@ -70,12 +75,20 @@ def createReport(request):
 
 
 def encrypt_file(key, filename):
-
-    with open(filename, 'rwb') as in_file:
-        while True:
-            chunk = in_file.read()
+    file = settings.MEDIA_ROOT + '/documents/' + filename
+    print(file)
+    print(type(file))
+    with open(file, 'rb') as in_file:
+        with  open(file + '.enc','wb') as out_file:
+            #while True:
+            chunk = in_file.read(1000)
+            print(chunk)
+                #if len(chunk) == 0:
+                 #   break
             chunk = bytes(chunk, 'utf-8')
-            in_file.write(key.encrypt(chunk, 32))
+            print(chunk)
+            encrypted = key.encrypt(chunk, 32)
+            out_file.write(encrypted)
 
 @csrf_exempt
 def createFolder(request):
@@ -164,6 +177,7 @@ def viewReport(request):
     rs = report.objects.get(title=title)
     files = Document.objects.all().filter(report_document=rs.id)
     owner = User.objects.get(id=rs.username_id_id)
+
     print(owner.username)
         #title = request.POST.getlist("selected_report[]")
     #for report_selected in title:
