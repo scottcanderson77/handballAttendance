@@ -11,15 +11,15 @@ class report(models.Model):
     is_private = models.BooleanField(default="False")
     location = models.CharField(max_length=100, default="Virginia")
     is_encrypted = models.BooleanField(default="False")
-    document = models.FileField(default='document',upload_to='documents/')
+    # document = models.FileField(default='document',upload_to='documents/')
     username_id = models.ForeignKey(User, null=True, blank=True)
 
     def __str__(self):
         return self.title
 
-# class Document(models.Model):
-#     document = models.FileField(default='document',upload_to='documents/')
-#     report_document = models.ForeignKey(report, on_delete=models.CASCADE())
+class Document(models.Model):
+    document = models.FileField(default='document',upload_to='documents/')
+    report_document = models.ForeignKey(report, on_delete=models.CASCADE)
 
 
 

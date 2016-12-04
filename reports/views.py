@@ -11,11 +11,13 @@ from django.utils import timezone
 from django.contrib.postgres.search import SearchVector
 from django.http import HttpResponse
 from wsgiref.util import FileWrapper
+from registration.models import UserProfile
 from django.core.files import File
 import os
 from django.conf import settings
 import mimetypes
 from django.utils.encoding import smart_str
+from Crypto.PublicKey import *
 from django.db.models import Q
 
 
@@ -24,7 +26,8 @@ from django.db.models import Q
 def createReport(request):
     if request.method == 'POST':
         form = ReportForm(request.POST, request.FILES)
-        if form.is_valid():
+        files = FileForm(request.FILES.getlist('document'))
+        if form.is_valid() and files.is_valid():
             checked = False
             encrypted = False
             if request.POST.get("is_private", False):
@@ -40,14 +43,23 @@ def createReport(request):
                 is_private = checked,
                 location=form.cleaned_data['location'],
                 is_encrypted = encrypted,
-                document = request.FILES.get('document', False),
                 username_id= request.user)
             newdoc.save()
+            file = request.FILES.getlist('document')
+            for f in file:
+                if newdoc.is_encrypted == True:
+                    pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
+                    pubKeyOb = bytes(pubKey, 'utf-8')
+                    pubKeyOb = RSA.importKey(pubKey)
+                    newfile = Document(document=f, report_document=newdoc)
+                    newfile.save()
 
     else:
         form = ReportForm()
+        files = FileForm()
     variables = RequestContext(request, {
-        'form': form
+        'form': form,
+        'files': files,
     })
 
 
@@ -57,6 +69,13 @@ def createReport(request):
     )
 
 
+def encrypt_file(key, filename):
+
+    with open(filename, 'rwb') as in_file:
+        while True:
+            chunk = in_file.read()
+            chunk = bytes(chunk, 'utf-8')
+            in_file.write(key.encrypt(chunk, 32))
 
 @csrf_exempt
 def createFolder(request):
@@ -143,6 +162,9 @@ def viewReport(request):
     user = request.user
     title = request.POST.get("selected_report")
     rs = report.objects.get(title=title)
+    files = Document.objects.all().filter(report_document=rs.id)
+    owner = User.objects.get(id=rs.username_id_id)
+    print(owner.username)
         #title = request.POST.getlist("selected_report[]")
     #for report_selected in title:
      #   rs = report.objects.get(title=report_selected)
@@ -154,7 +176,7 @@ def viewReport(request):
     #wrapper = FileWrapper(File(filename))
     #response = HttpResponse(myFile)
     #response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
-    return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user})
+    return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user, 'files': files, 'owner': owner})
 
 
 def download(request, file_name):
