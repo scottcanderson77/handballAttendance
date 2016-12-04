@@ -27,6 +27,7 @@ urlpatterns = [
          url(r'^viewYourReport/$', viewYourReports),
          url(r'^viewReportDescription', viewReport),
          url(r'^viewReport/$', viewReports),
+         url(r'^searchReport/$', searchReport),
          url(r'^deleteReport/$', deleteReport),
          url(r'^createFolder/$', createFolder),
          url(r'^renameFolder/$', renameFolder),
@@ -41,6 +42,7 @@ urlpatterns = [
          url(r'^allMessages/(?P<message_id>[0-9]+)/$', detail, name="detail"),
          url(r'^checkMessage/(?P<message_id>[0-9]+)/$', detail, name="detail"),
          url(r'^deleteMessage/(?P<message_id>[0-9]+)/$', deleteMessage, name="delete"),
+         url(r'^download/(?P<file_name>.+)$', download)
 
 ]
 

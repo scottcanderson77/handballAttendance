@@ -6,6 +6,7 @@
     <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
         <table border="0">
             {{ form.as_table }}
+            {{ files.as_table }}
         </table>
         <input type="submit" name="createReport" value="Create Report"/>
     </form>
