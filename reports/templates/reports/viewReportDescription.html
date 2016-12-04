@@ -19,7 +19,8 @@
                 <tr><td>{{ rs.detailed_description }}</td></tr>
                 <tr><td>{{ rs.is_encrypted }}</td></tr>
                 <tr><td>{{ rs.is_private }}</td></tr>
-                <tr><td>{{ rs.document }}</td><tr>
+                <tr><td><a href="/download/{{ rs.document }}"> {{ rs.document}} </a> </td></tr>
+{#                <tr><td><form action="/viewReportDescription/" method="post">{% csrf_token %} <input type="hidden" name="selected_report" value="{{ rs.title }}"/><input type="submit" name="path" value="{{ rs.document }}"/></form></td><tr>#}
                 <tr><td> {{ rs.username_id_id }}</td></tr>
 {#             {% endif %}#}
 

@@ -8,6 +8,15 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.postgres.search import SearchVector
+from django.http import HttpResponse
+from wsgiref.util import FileWrapper
+from django.core.files import File
+import os
+from django.conf import settings
+import mimetypes
+from django.utils.encoding import smart_str
+from django.db.models import Q
 
 
 # Create your views here.
@@ -23,6 +32,7 @@ def createReport(request):
                 encrypted = True
             if request.POST.get("is_encrypted", False):
                 encrypted = True
+            # clean_title = form.clean('title')
             newdoc = report(title=form.cleaned_data['title'],
                 timestamp=timezone.now(),
                 short_description=form.cleaned_data['short_description'],
@@ -30,7 +40,7 @@ def createReport(request):
                 is_private = checked,
                 location=form.cleaned_data['location'],
                 is_encrypted = encrypted,
-                document = request.FILES['document'],
+                document = request.FILES.get('document', False),
                 username_id= request.user)
             newdoc.save()
 
@@ -132,13 +142,36 @@ def viewReports(request):
 def viewReport(request):
     user = request.user
     title = request.POST.get("selected_report")
-    #title = request.POST.getlist("selected_report[]")
+    rs = report.objects.get(title=title)
+        #title = request.POST.getlist("selected_report[]")
     #for report_selected in title:
      #   rs = report.objects.get(title=report_selected)
+    #filename = os.path.realpath(rs.document)
+    #filename = "media/" + str(rs.document)
+    #f = open(filename, 'r')
+    #myFile = File(f)
+    #print(filename)
+    #wrapper = FileWrapper(File(filename))
+    #response = HttpResponse(myFile)
+    #response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
+    return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user})
 
-    print(title)
-    rs = report.objects.get(title=title)
-    return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user':user})
+
+def download(request, file_name):
+    file_path = settings.MEDIA_ROOT + '/' + file_name
+    file_wrapper = FileWrapper(open(file_path, 'rb'))
+    file_mimetype = mimetypes.guess_type(file_path)
+    print(file_mimetype)
+    print((file_wrapper))
+    response = HttpResponse(file_wrapper, content_type=file_mimetype)
+    response['X-Sendfile'] = file_path
+    response['Content-Disposition'] = 'attachment; filename="%s"' % smart_str(file_name)
+
+    # f = open(file_path, 'r')
+    # myFile = File(f)
+    # # print(filename)
+    # print("puppies")
+    return response
 
 
 
@@ -148,8 +181,6 @@ def viewYourReports(request):
     folders = folder.objects.all().filter(username_id=user)
     return render(request, 'reports/viewYourReports.html', {'reports':reports, 'user': user, 'folders':folders })
 
-def searchReport(request, field):
-    reports.report.objects.all().filter()
 
 def editReport(request):
     user = request.user
@@ -181,10 +212,10 @@ def deleteReport(request):
     report.objects.filter(id=id).delete()
     return render(request, 'reports/viewYourReports.html', {'user':user})
 
-
+@csrf_exempt
 def searchReport(request):
-    query_string = request.GET['q']
+    query_string = request.GET.get('q')
     results = report.objects.annotate(
         search=SearchVector('title', 'short_description', 'detailed_description'),
-    ).filter(search=query_string).order_by('timestamp')
-    return render_to_response('reports/searchReports.html', {'results': results }, context_instance=RequestContext(request))
+    ).filter(search=query_string).exclude(is_private=True).order_by('timestamp')
+    return render(request,'reports/searchReports.html', {'results': results })
