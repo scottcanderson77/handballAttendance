@@ -47,6 +47,9 @@ urlpatterns = [
          url(r'^deleteMessage/(?P<message_id>[0-9]+)/$', deleteMessage, name="delete"),
          url(r'^download/(?P<file_name>.*.+)$', download),
          url(r'^reportHome/$', reportHome, name="report"),
+         url(r'^folderHome/$', folderHome, name="folder"),
+         url(r'^groupHome/$', groupHome, name="group"),
+
 ]
 
 if settings.DEBUG:
