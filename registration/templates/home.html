@@ -5,20 +5,18 @@
     <input type="hidden" name="next" value="groups" />
     </form>
     <a href="/createGroup/">Create Group</a><br/>
-    <a href="/messageHome/">Message HomePage</a><br/>
     {% if not SM %}
         <a href="/YourGroups">View your groups</a><br/>
     {% endif %}
     {% if SM %}
         <a href="/YourGroups">View all groups</a><br/>
     {% endif %}
-    <a href="/createReport/">Create Report</a><br/>
     {% if SM %}
         <a href="/changeUserRoles/">Change User roles</a><br/>
     {% endif %}
 
-    <a href="/YourGroups">View your groups</a><br/>
-    <a href="/createReport/">Create Report</a><br/>
-    <a href="/viewReport/">View Reports</a><br/>
+    <a href="/reportHome/">Reporting</a><br/>
+    <a href="/messageHome/">Messaging</a><br/>
+
 
 {% endblock %}

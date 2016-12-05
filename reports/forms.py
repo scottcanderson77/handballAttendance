@@ -46,4 +46,3 @@ class FolderForm(forms.Form):
             pass
         return self.cleaned_data
 
-

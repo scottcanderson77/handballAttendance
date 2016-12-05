@@ -6,9 +6,8 @@ from django.contrib.auth import authenticate
 
 
 class MessageForm(forms.Form):
-    title = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
-            label=_("Title"), error_messages={
-            'invalid': _("This value must contain only letters, numbers and underscores.")})
+    title = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
+            label=_("Title"))
 
     body = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=500)), label=_("Body of Message"))
 
@@ -32,9 +31,7 @@ class MessageForm(forms.Form):
 
 
 class searchTitleForm(forms.Form):
-    title = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=50)),
-            label=_("Title"), error_messages={
-            'invalid': _("This value must contain only letters, numbers and underscores.")})
+    title = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=500)), label=_("Body of Message"))
     def clean(self):
         return self.cleaned_data
 

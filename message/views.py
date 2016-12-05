@@ -23,21 +23,16 @@ def createMessage(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data['encrypt'])
-            pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
+            #pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
 
             if form.cleaned_data['encrypt'] == True:
+                print(form.cleaned_data['sendToUser'])
                 pubKey = UserProfile.objects.get(user__username__iexact=form.cleaned_data['sendToUser']).publicKey
-                print(pubKey)
                 pubKeyOb = bytes(pubKey, 'utf-8')
                 pubKeyOb = RSA.importKey(pubKey)
-                print(pubKeyOb)
-                print(type(pubKeyOb))
-                print(pubKeyOb.e)
-                print(pubKeyOb.n)
                 body = bytes(form.cleaned_data['body'], 'utf-8')
-                print(body)
                 body = pubKeyOb.encrypt(body, 32)
-                print(body)
+
 
                 message = Message.objects.create(
                     receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
@@ -77,13 +72,16 @@ def displayMessage(request):
             else:
                 messages = Message.objects.filter(sender=request.user)
 
-            return render_to_response('allMessages.html', {"messages": messages})
+            return render_to_response('allMessages.html', {'messages': messages, 'form':form})
     else:
         form = searchTitleForm()
     variables = RequestContext(request, {'form': form})
     messages = []
     messages = Message.objects.filter(sender=request.user)
-    return render_to_response('allMessages.html', {"messages": messages}, variables, )
+    userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
+    userPro.sentMessagesScene= (len(messages))
+    userPro.save()
+    return render_to_response('allMessages.html', {'messages': messages}, variables,)
 
 
 @csrf_exempt
@@ -129,34 +127,40 @@ def checkMessage(request):
     variables = RequestContext(request, {'titleForm':titleForm, 'senderForm': senderForm, 'deleteForm':DeleteForm})
     messages = []
     messages = Message.objects.filter(receiver=request.user)
+    userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
+    userPro.recMessagesScene = (len(messages))
+    userPro.save()
     return render_to_response('checkMessage.html', {"messages": messages}, variables, )
 
 
 @csrf_exempt
 def messageHome(request):
-    message = Message.objects.all()
-    return render_to_response('messageHome.html', {'user': request.user})
+    userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
+    recMessage = []
+    sentMessage =[]
+    sentMessage = Message.objects.filter(sender=request.user)
+    recMessage = Message.objects.filter(receiver=request.user)
+    oldR = (len(recMessage))
+    oldS = (len(sentMessage))
+    newR = str((len(recMessage) - int(userPro.recMessagesScene)))
+    newS = str((len(sentMessage) - int(userPro.sentMessagesScene)))
+    if(int(newR) < 0):
+        newR = 0
+    if(int(newS) < 0):
+        newS = 0
+
+    return render_to_response('messageHome.html', {'user': request.user, 'userPro': userPro, 'newR':newR, 'newS':newS, 'oldR':oldR, 'oldS':oldS})
 
 @csrf_exempt
 def detail(request, message_id):
     message = Message.objects.get(pk = message_id)
-    decrypt = "nothing decrypted"
+    decrypted = "nothing decrypted"
     if request.method == 'POST':
         form = decryptForm(request.POST)
         if (form.is_valid()):
-            # temp = (form.cleaned_data['privateKey'])
-            # print(temp)
-            # temp = binascii.a2b_qp(temp.encode('latin_1'))
-            # #print(temp)
-            # privateKey = RSA.importKey(temp)
-            # decrypted=privateKey.decrypt((str(message.message_body)))
             temp = bytes(message.message_body, 'utf-8')
             private = UserProfile.objects.get(user__username__iexact=request.user.username).privateKey
             pub = UserProfile.objects.get(user__username__iexact=request.user.username).publicKey
-            #print(private)
-            #privateOb = bytes(private, 'utf-8')
-            #print(privateOb)
-            #print(type (privateOb))
             privKeyOb = RSA.importKey(private)
             body = bytes(message.message_body, 'utf-8')
             priv = privKeyOb.decrypt(ast.literal_eval(str(message.message_body)))
@@ -170,7 +174,18 @@ def detail(request, message_id):
 
 @csrf_exempt
 def deleteMessage(request, message_id):
-    if Message.objects.get(pk = message_id).delete():
-        return render_to_response('messageHome.html')
+    userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
+    if Message.objects.get(pk = message_id).sender == request.user:
+        userPro.recMessagesScene=str(int(userPro.recMessagesScene)-1)
     else:
-        return render_to_response('messageHome.html')
+        userPro.sentMessagesScene=str(int(userPro.sentMessagesScene)-1)
+    if Message.objects.get(pk = message_id).delete():
+        return render_to_response('messageDeleted.html')
+    else:
+        return render_to_response('messageDeleted.html')
+
+
+
+@csrf_exempt
+def messageDeleted(request):
+        return render_to_response('messageDeleted.html')

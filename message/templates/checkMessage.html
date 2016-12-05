@@ -1,37 +1,38 @@
 {% extends "base.html" %}
 {% block title %}Check Messages{% endblock %}
-{% block head %}Received Messsages{% endblock %}
+{% block head %}<i class="fa-ul fa fa-shekel"></i>Received Messsages{% endblock %}
 
 {% block content %}
    <title>All Received Messages</title>
-    </head>
-    <body>
-    <form method="post" action=".">
-        <table border="0">
-            {{ titleForm.as_table }}
-        </table>
-        <input type="submit" value="Search" />
-    </form>
-    </body>
-    <body>
-    <form method="post" action=".">
-        <table border="0">
-            {{ senderForm.as_table }}
-        </table>
-        <input type="submit" value="Search" />
-    </form>
-    </body>
+{#    </head>#}
+{#    <body>#}
+{#    <form method="post" action=".">#}
+{#        <table border="0">#}
+{#            {{ titleForm.as_table }}#}
+{#        </table>#}
+{#        <input type="submit" value="Search" />#}
+{#    </form>#}
+{#    </body>#}
+
+{#    <body>#}
+{#    <form method="post" action=".">#}
+{#        <table border="0">#}
+{#            {{ senderForm.as_table }}#}
+{#        </table>#}
+{#        <input type="submit" value="Search" />#}
+{#    </form>#}
+{#    </body>#}
 
 
     {% for message in messages %}
-        <br>    <a href= '/checkMessage/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.sender }}</h></br
+        </br><i class="fa-ul fa fa-shekel fa-spin"></i>
+<a href= '/checkMessage/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.sender }}</h></ul>
     {% endfor %}
     </table>
     <br>
-    <input type="submit" value="Delete" />
     </body>
     <br>
     <br>
     <a href="/logout/">Logout</a>
-    <a href="/messageHome/">Back</a>
+    </br><a href="/messageHome/">Back</a>
 {% endblock %}

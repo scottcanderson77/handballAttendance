@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Your groups</title>
@@ -9,6 +9,11 @@
     {% for group in groups %}
         <li><a href="/group/{{ group.id }}">{{ group.name }}</a></li>
     {% endfor %}
+
+    </br>
+    </br>
+    <a href="/home/"> Home</a>
+
 </ul>
 </body>
 </html>

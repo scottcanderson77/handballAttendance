@@ -20,6 +20,7 @@ def displayUsers(request, placeholder):
     print(g_user_set)
     return render(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user, 'g_id' : g_id, 'groupUsers' : g_user_set})
 
+@csrf_exempt
 def viewGroups(request):
     current_user = request.user
     all_groups = Group.objects.all()
@@ -28,6 +29,7 @@ def viewGroups(request):
 
     return render(request, 'groupmanagement/yourgroups.html', {'groups' : all_groups})
 
+@csrf_exempt
 def groupActionsView(request, placeholder):
     page_path = request.get_full_path()
 
@@ -54,6 +56,7 @@ def removeMember(request):
     group.user_set.remove(user)
     return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")
 
+@csrf_exempt
 def addReports(request):
     user = request.user
     reports = report.objects.all().filter(username_id=user)
