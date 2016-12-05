@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to Add Report(s) to Folder {{ user.username }} !!!</p>
+{#        <table border="1">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Folder</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{##}
+{#        <tbody>#}
+{#                <tr><td> {{ folder_title }}</td></tr>#}
+
+
+{#            </tr>#}
+        {% for report in reports %}
+            <form method="post" action="/addToFolder/" enctype="multipart/form-data">{% csrf_token %}
+             <input type="checkbox" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }}
+                {% endfor %}
+            <input type="submit" name="createFolder" value="Add Report(s) to {{ folder_title }} Folder"/>
+                <input type="hidden" name="folder_title" value="{{ folder_title }}"/>
+
+            </form>
+
+
+
+{#          </tbody>#}
+{##}
+{#    </table>#}
+        {% if user.is_superuser == True or rs.username_id_id == user.id %}
+            <form action="/editReport/" method="post">{% csrf_token %}
+                <input type="hidden" name="title" value="{{ folders.title }}"/>
+
+                <td><input type="submit" value="Edit Report"/> </td>
+            </form>
+
+            <form action="/deleteReport/" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ rs.id }}"/>
+
+                <td><input type="submit" value="Delete Report"/> </td>
+            </form>
+         {% endif %}
+        <a  href=""
+        <a href="/createFolder/">Create Folder</a>
+        <br>
+        <a href="/viewFolder/">View Folders</a>
+<br>
+    <a href="/logout/">Logout</a>
+{% endblock %}
