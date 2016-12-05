@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Django{% endblock %}
+{% block head %}Welcome to Django{% endblock %}
+    {% block content %}
+        <p>Welcome to Create Group{{ user.username }} !!!</p>
+    <form method="post" action="/createGroup/">{% csrf_token %}
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" name="createGroup" value="Create Group"/>
+         {% for user in users %}
+             <input type="checkbox" name="selected_user[]" value="{{ user.username }}"/> {{ user.username }}
+
+         {% endfor %}
+    </form>
+        <a href="/viewReport/">View Reports</a></br>
+        <a href="/viewFolder/">View Folders</a>
+        </br><a hred="/folderHome/">Folder Home</a>
+        </br><a href="/home/">Home</a>
+
+        <br>
+    <a href="/logout/">Logout</a>
+
+{% endblock %}

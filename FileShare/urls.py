@@ -26,7 +26,7 @@ urlpatterns = [
          url(r'^createReport/$', createReport),
          url(r'^editReport/$', editReport),
          url(r'^viewYourReport/$', viewYourReports),
-         url(r'^viewReportDescription', viewReport),
+         url(r'^view', viewPublicReport),
          url(r'^viewReport/$', viewReports),
          url(r'^searchReport/$', searchReports),
          url(r'^deleteReport/$', deleteReport),

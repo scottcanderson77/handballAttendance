@@ -3,19 +3,24 @@
 {#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
 {#{% block head %}Messaging{% endblock %}#}
 {% block content %}
-    <h1 id="messageh1">Reporting<i class="fa fa-pencil fa-3x"></i></h1>
+    <h1 id="messageh1">Reports <i class="fa fa-pencil fa-2x"></i></h1>
     <p>Welcome {{ user.username }} !!!</p>
+    <ul>
+        <li><a href="/createReport/">Create Report</a></li>
 
-    <a href="/createReport/">Create Report</a>
-    </br>
-    <a href="/deleteReport/">Delete Reports</a>
-    </br>
-{#    <a href="/viewReport/">View Reports</a>#}
-{#  this does not belong  </br>#}
-    <a href="/searchReport/">Search Reports</a>
-    </br>
-    <a href="/editReport/">Edit Reports</a>
-    <br/>
-    <br/>
-    <a href="/home/">Back</a><br/>
+        </br>
+        <li><a href="/deleteReport/">Delete Reports</a></li>
+        </br>
+        <li><a href="/searchReport/">Search Reports</a></li>
+        </br>
+        <li><a href="/editReport/">Edit Reports</a></li>
+        <br/>
+        <li><a href="/viewYourReport/">View Your Report(s)</a></li>
+        <br>
+        <li list-style="none"><a href="/viewPublicReport/">View Public Report(s)</a></li>
+        <br/>
+
+    <button><a href="/home/">Back</a></button>
+    </ul>
+
 {% endblock %}

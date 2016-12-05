@@ -3,6 +3,8 @@ from django import forms
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.views import login
+from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -27,9 +29,27 @@ def register(request):
                 email=form.cleaned_data['email'],
 
             )
+
+            print(user)
+            username = user.username
+            print(username)
+
+            password = user.password
+            print(password)
+            user.backend ='django.contrib.auth.backends.ModelBackend'
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'],)
+
+            # user.backend ='django.contrib.auth.backends.ModelBackend'
+            # user.save()
+            #
+            #
+            # auth.login(request, user)
+            # b=user.backend = 'django.contrib.auth.backends.ModelBackend'
+            # login(request,user,b)
             print(private)
             print(private.exportKey())
-            UserProfile.objects.create(user=user, privateKey=private.exportKey(), publicKey=private.publickey().exportKey())
+            UserProfile1=UserProfile.objects.create(user=user, privateKey=private.exportKey(), publicKey=private.publickey().exportKey())
+            print(UserProfile1.user)
             #print(private.exportKey())
             priv = private.exportKey('PEM')
             priv_KEY = binascii.b2a_qp(priv).decode('latin_1')
@@ -37,12 +57,14 @@ def register(request):
             file = open("privateKeyDowload.txt","w")
             file.write(str(priv))
             privateKeyDownload(request, priv)
+            login(request, user)
+            return HttpResponseRedirect("/home/")
 
-            return render_to_response('success.html', {'private': priv_KEY})
+    #         return render_to_response('success.html', {'private': priv_KEY})
     else:
         form = RegistrationForm()
     variables = RequestContext(request, {
-        'form': form
+        'form': form,
     })
 
     return render_to_response(
@@ -53,7 +75,7 @@ def register(request):
 
 def register_success(request):
     return render_to_response(
-        'registration/success.html',
+        'home.html',
     )
 
 def logout_page(request):
@@ -71,6 +93,7 @@ def home(request):
         {'user': request.user, 'SM' : isSuperUser}
     )
 
+@login_required
 @csrf_exempt
 def createGroup(request):
     if request.method == 'POST':
@@ -96,11 +119,13 @@ def createGroup(request):
         variables,
     )
 
+@login_required
 def changeUserRole(request):
     current_user = request.user.username
     users = User.objects.all()
     return render(request, 'registration/UserRoles.html', {'current_user' : current_user, 'users' : users})
 
+@login_required
 @csrf_exempt
 def updatePrivilege(request):
     username = request.POST.get('username')

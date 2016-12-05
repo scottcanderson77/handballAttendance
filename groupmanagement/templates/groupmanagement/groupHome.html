@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
+{#{% block head %}Messaging{% endblock %}#}
+{% block content %}
+    <h1 id="messageh1">Groups<i class="fa fa-cubes fa-2x"></i></h1>
+    <p>Welcome {{ user.username }} !!!</p>
+
+    <a href="/createReport/">Create Report</a>
+    </br>
+    <a href="/deleteReport/">Delete Reports</a>
+    </br>
+{#    <a href="/viewReport/">View Reports</a>#}
+{#  this does not belong  </br>#}
+    <a href="/displayUsers/">Users </a>
+    </br>
+    <a href="/createGroup/">Create Group</a>
+    <br/>
+    <br/>
+    <a href="/home/">Back</a><br/>
+{% endblock %}ack</a><br/>

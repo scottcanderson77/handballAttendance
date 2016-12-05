@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-{% block title %}<h1>User Registration</h1>{% endblock %}
-{% block head %}<h1>User Registration</h1>{% endblock %}
+{% block title %}User Registration{% endblock %}
+{% block head %}<h1 id="messageh1">Registration<i class="fa fa-user fa-2x" aria-hidden="true"></i></h1>
+{% endblock %}
 {% block content %}
     <form method="post" action=".">{% csrf_token %}
         <table class="table table-md table-striped table-inverse table-bordered table-hover">

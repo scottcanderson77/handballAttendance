@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'FileShare.urls'
 
 TEMPLATES = [
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fileshared',
+        'NAME': 'Fileshared',
         'USER' : 'postgres',
         'PASSWORD' : 'were1234',
         'HOST' : 'localhost',

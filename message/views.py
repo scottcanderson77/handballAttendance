@@ -12,11 +12,14 @@ from message.templates import *
 from Crypto.PublicKey import *
 from Crypto import Random
 import ast
+from django.contrib.auth.decorators import login_required
 import binascii
 # Create your views here.
 
 
 @csrf_exempt
+
+@login_required
 def createMessage(request):
     if request.method == 'POST':
         user = request.user
@@ -59,6 +62,7 @@ def createMessage(request):
 
 
 @csrf_exempt
+@login_required
 def displayMessage(request):
     title = None
     if request.method == 'POST':
@@ -85,6 +89,7 @@ def displayMessage(request):
 
 
 @csrf_exempt
+@login_required
 def checkMessage(request):
     receiver = None
     messages = []
@@ -134,6 +139,7 @@ def checkMessage(request):
 
 
 @csrf_exempt
+@login_required
 def messageHome(request):
     userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
     recMessage = []
@@ -152,6 +158,7 @@ def messageHome(request):
     return render_to_response('messageHome.html', {'user': request.user, 'userPro': userPro, 'newR':newR, 'newS':newS, 'oldR':oldR, 'oldS':oldS})
 
 @csrf_exempt
+@login_required
 def detail(request, message_id):
     message = Message.objects.get(pk = message_id)
     decrypted = "nothing decrypted"
@@ -173,6 +180,7 @@ def detail(request, message_id):
 
 
 @csrf_exempt
+@login_required
 def deleteMessage(request, message_id):
     userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
     if Message.objects.get(pk = message_id).sender == request.user:
@@ -187,5 +195,6 @@ def deleteMessage(request, message_id):
 
 
 @csrf_exempt
+@login_required
 def messageDeleted(request):
         return render_to_response('messageDeleted.html')

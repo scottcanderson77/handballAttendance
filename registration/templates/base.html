@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
-        <title>Django Login Application |
+        <title>FileShare
         {% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -12,13 +12,11 @@
     </head>
     <body>
         <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-            <a class="navbar-brand" href=".">FileShare</a>
+            <a class="navbar-brand" href="/home/"><i class="fa fa-file"aria-hidden="true"></i>FileShare</a>
                 <ul class="nav navbar-nav">
                     <li class="nav-item active">
 {#                        <a class="nav-link" href=".">Home <span class="sr-on"></span></a>#}
                     </li>
-                    </br>
-                    </br>
                     <li class="nav-item">
                         <a class="nav-link" href="/reportHome/">Reports<i class="fa fa-pencil"aria-hidden="true"></i></a>
                     </li>
@@ -29,13 +27,13 @@
                         <a class="nav-link" href="/groupHome/">Groups<i class="fa fa-cubes" aria-hidden="true"></i></a>
                     </li>
                     <li>
-                        <a class="nav-link2" href="/folderHome/">Folder<i class="fa fa-folder-o" aria-hidden="true"></i></a>
+                        <a class="nav-link2" href="/folderHome/">Folders<i class="fa fa-folder-o" aria-hidden="true"></i></a>
                     </li>
                     <li class="nav-item nav-item-right">
                         <a class="nav-link1" float="right" href="/register">Register<i class="fa fa-user" aria-hidden="true"></i></a>
                     </li>
                     <li class="nav-item">
-                    <li class="nav-item">
+                    <li style="float: right" class="nav-item">
                         <a class="nav-link2" href="/logout/">Logout<i class="fa fa-sign-out" aria-hidden="true"></i></a>
                     </li>
 
@@ -45,6 +43,19 @@
         <h2>{% block head %}{% endblock %}</h2>
         {% block content %}{% endblock %}
 <script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
-
     </body>
+<footer style="position: fixed; bottom:0; background-color: #e3f2fd; margin:0; width: 100%">
+        <div class="container">
+    <hr />
+        <div class="text-center center-block">
+            <p class="txt-railway">- FileShare is the Best File Sharing Application -</p>
+            <br />
+                <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+	            <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+	            <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+	            <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+</div>
+    <hr />
+</div>
+</footer>
 </html>
