@@ -129,5 +129,4 @@ def addReports(request):
 @login_required()
 def groupHome(request):
     user = request.user
-    print(user)
-    return render_to_response('groupmanagement/groupHome.html', {"user", user})
+    return render_to_response("groupmanagement/groupHome.html", {"user":user})

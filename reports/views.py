@@ -379,6 +379,7 @@ def reportHome(request):
     user = request.user
     return render_to_response("reports/reportHome.html", {"user":user})
 
+@csrf_exempt
 def folderHome(request):
     user = request.user
-    return render_to_response(("reports/folderHome.html", {"user":user}))
+    return render_to_response("reports/folderHome.html", {"user":user})

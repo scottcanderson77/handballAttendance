@@ -1,36 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
     {% block content %}
-        <p>Welcome to View Reports {{ user.username }} !!!</p>
-        <table border="1">
-        <thead>
-        <tr>
-            <th>Report</th>
-        </tr>
-        </thead>
+            <div class="container" align="center" style="font-size: large">
 
-        <tbody>
+        <p> Hello {{ user.username }} !!!</p>
+            <h1>Reports You have Access to:</h1>
+
+
+
+       <ul style="list-style-type:none">
          {% for report in reports %}
-            <tr></tr>
+            <br>
              {% if report.username_id_id == user.id %}
                  <form action="/viewReportDescription/" method="post">{% csrf_token %}
-                    <td><input type="submit" name="title" value="{{ report.title }}"/></td>
-                    <td><input type="hidden" name="selected_report" id= "title" value="{{ report.title }}"/></td>
+                    <input type="submit" class="btn btn-primary btn-lg " name="title" value="{{ report.title }}"/>
+                    <input type="hidden" name="selected_report" id= "title" value="{{ report.title }}"/>
                  </form>
              {% endif %}
 
-            </tr>
-        {% endfor %}
-          </tbody>
-    </table>
-        <a href="/createFolder/">Create Folder</a>
-        <br>
-        <a href="/viewFolder/">View Folders</a>
-        <br>
-        <a href="/addtoFolder/">Add Report(s) to a Folder(s)</a>
-<br>
-        <a href="/reportHome/">Report Home</a></br>
 
-    <a href="/logout/">Logout</a>
+
+        {% endfor %}
+
+            <br>
+       <a href="/reportHome/">Back</a></br>
+    <a href="/home/"> Home</a></br>
+        </ul>    </div>
+
+
 {% endblock %}

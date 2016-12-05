@@ -1,29 +1,25 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
     {% block content %}
-        <p>Welcome to View Reports {{ user.username }} !!!</p>
-        <table border="1">
-        <thead>
-        <tr>
-            <th>Report</th>
-        </tr>
-        </thead>
+        <div class="container" align="center" style="font-size: medium">
 
-        <tbody>
+        <p>Hello {{ user.username }} !!!</p>
+        <table border="1" class="table table-md table-striped table-inverse table-bordered table-hover">
+
+                <tbody>
 {#        <tr> {{ reports.title }}</tr>#}
-<tr><td> {{ reports.title }}</td></tr>
-                <tr><td> {{ rs.title }} </td></tr>
-                <tr><td>{{ rs.timestamp }}</td></tr>
-                <tr><td>{{ rs.short_description }}</td></tr>
-                <tr><td>{{ rs.detailed_description }}</td></tr>
+{#<tr><td> {{ reports.title }}</td></tr>#}
+                <tr><th>Title:</th><td> {{ rs.title }} </td></tr>
+                <tr><th>Timestamp:</th><td>{{ rs.timestamp }}</td></tr>
+                <tr><th>Short Description:</th><td>{{ rs.short_description }}</td></tr>
+                <tr><th>Detailed Description:</th><td>{{ rs.detailed_description }}</td></tr>
                 <tr><td>{{ rs.is_encrypted }}</td></tr>
-                <tr><td>{{ rs.is_private }}</td></tr>
+                {{ rs.is_encrypted }}
+                <tr><th>Private:</th><td>{{ rs.is_private }}</td></tr>
                 {% for f in files %}
-                <tr><td><a href="/download/{{ f.document }}"> {{ f.document}} </a> </td></tr>
+                <tr><th>File(s):</th><td><a href="/download/{{ f.document }}"> {{ f.document}} </a> </td></tr>
 {#                <tr><td><form action="/viewReportDescription/" method="post">{% csrf_token %} <input type="hidden" name="selected_report" value="{{ rs.title }}"/><input type="submit" name="path" value="{{ rs.document }}"/></form></td><tr>#}
                 {% endfor %}
-                <tr><td> {{ owner.username }}</td></tr>
+                <tr><th>Owner:</th><td> {{ owner.username }}</td></tr>
 
             </tr>
           </tbody>
@@ -45,9 +41,9 @@
                 <td><input type="submit" value="Delete Report"/> </td>
             </form>
          {% endif %}
-        <a href="/createFolder/">Create Folder</a>
         <br>
-        <a href="/viewFolder/">View Folders</a>
-<br>
-    <a href="/logout/">Logout</a>
+        <a href="/reportHome/">Back</a></br>
+    <a href="/home/"> Home</a></br>
+</div>
+
 {% endblock %}
