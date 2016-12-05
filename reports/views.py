@@ -129,6 +129,10 @@ def addToFolder(request):
         folder_title = request.POST.get('folder_title')
         print(folder_title)
         selectedReport = request.POST.getlist('selected_report[]')
+        filteredReports=[]
+        title = reports.title
+        if title not in folder.added_reports:
+            filteredReports.append(report.title)
         for sr in selectedReport:
             r = report.objects.get(title=sr)
             folder.objects.get(title=folder_title).added_reports.add(r)
