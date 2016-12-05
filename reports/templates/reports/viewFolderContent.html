@@ -5,35 +5,39 @@
 
         <p>Hello {{ user.username }} !!!</p>
         <h1>Report(s)</h1>
+        <br>
 
             <ul style="list-style-type:none" align="center">
 
          {% for reports in r %}
             <li>
 
-                <form action="/viewReport/" method="post">{% csrf_token %}
-                    <input type="submit" name ="selected_report" id= "title" value="{{ reports.title }}"/>
+                <form action="/viewReportDescription/" method="post">{% csrf_token %}
+                    <input type="submit" name ="selected_report" id= "title" class="btn btn-primary btn-lg " value="{{ reports.title }}"/>
                 </form>
              </li>
              <li>
                 <form action="/viewFolderContent/" method="post">{% csrf_token %}
-                    <td><input type="submit" name ="remove" value="remove"/>
+                    <td><input type="submit" name ="remove" style="border:none;" class="btn btn-danger btn-sm" value="remove"/>
                     <input type="hidden" name ="selected_report" id= "report" value="{{ reports.title }}"/>
                     <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/>
                 </form>
              </li>
+             <br>
         {% endfor %}
           </tbody>
+            <br>
         <li>
         <form action="/addToFolder/" method="post">{% csrf_token %}
-            <td><input type="submit" name="delete" value="Add"/></td>
+            <td><input type="submit" name="delete" value="Add Report(s) to Folder"/></td>
 {#                <input type="hidden" name ="selected_report" id= "report" value="{{ reports.title }}"/> </td>#}
-                <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/> </ul>
+                <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/>
             </form>
             </li>
 
         <a href="/createFolder/">Create Folder</a>
         </br><a href="/renameFolder/">Rename a Folder</a>
+             <a href="/folderHome/">Folder Home</a>
 
 <br>   <a href="/home/">Home</a></br>
     </ul>

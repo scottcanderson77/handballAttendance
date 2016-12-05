@@ -1,16 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Create Message{% endblock %}
-{% block head %}Create Messsage{% endblock %}
-{% block content %}
-    <form method="post" action=".">
-        <p> Title   {{ form.title }}</p>
-        <p> Body    {{ form.body }}</p>
-        <p> Send To {{ form.sendToUser }}</p>
-        <p> Encrypt {{ form.encrypt }}</p>
-        <input type="submit" value="Send" />
-    </form>
-    </br>
-    <a href="/messageHome/">Message Home</a></br>
-    <a href="/logout/">Logout</a></br>
+    {% block content %}
+        <div class="container" align="center" style="font-size: large">
+        <h1>Create a Message</h1>
+            <form method="post" action=".">
+                <p> Title   {{ form.title }}</p>
+                <p> Body    {{ form.body }}</p>
+                <p> Send To {{ form.sendToUser }}</p>
+                <p> Encrypt {{ form.encrypt }}</p>
+                <input class="btn btn-primary" type="submit" value="Send" />
+            </form>
+            </br>
+            <a href="/messageHome/">Message Home</a></br>
+            <a href="/logout/">Logout</a></br>
+    </div>
 
 {% endblock %}

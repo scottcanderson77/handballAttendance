@@ -1,31 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Check Messages{% endblock %}
-{% block head %}<i class="fa-ul fa fa-shekel"></i>Received Messsages{% endblock %}
 
 {% block content %}
-   <title>All Received Messages</title>
-{#    </head>#}
-{#    <body>#}
-{#    <form method="post" action=".">#}
-{#        <table border="0">#}
-{#            {{ titleForm.as_table }}#}
-{#        </table>#}
-{#        <input type="submit" value="Search" />#}
-{#    </form>#}
-{#    </body>#}
+    <div class="container" align="center" style="font-size: large">
 
-{#    <body>#}
-{#    <form method="post" action=".">#}
-{#        <table border="0">#}
-{#            {{ senderForm.as_table }}#}
-{#        </table>#}
-{#        <input type="submit" value="Search" />#}
-{#    </form>#}
-{#    </body>#}
+
+   <h1><i class="fa fa-comment-o fa-2x" aria-hidden="true"></i>All Received Messages</h1>
+
 
 
     {% for message in messages %}
-        </br><i class="fa-ul fa fa-shekel fa-spin"></i>
 <a href= '/checkMessage/{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.sender }}</h></ul>
     {% endfor %}
     </table>
@@ -36,4 +20,6 @@
     </br>
     <a href="/messageHome/">Message Home</a></br>
     <a href="/logout/">Logout</a>
+
+    </div>
 {% endblock %}
