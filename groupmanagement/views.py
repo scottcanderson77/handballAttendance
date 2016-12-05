@@ -1,6 +1,6 @@
 # views.py
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
@@ -18,7 +18,7 @@ def displayUsers(request, placeholder):
     g_user_set = Group.objects.get(id=g_id).user_set.all()
     current_user = request.user
     print(g_user_set)
-    return render(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user, 'g_id' : g_id, 'groupUsers' : g_user_set})
+    return render_to_response(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user, 'g_id' : g_id, 'groupUsers' : g_user_set})
 
 @csrf_exempt
 def viewGroups(request):
@@ -27,7 +27,7 @@ def viewGroups(request):
     if not current_user.is_superuser:
         all_groups = current_user.groups.all()
 
-    return render(request, 'groupmanagement/yourgroups.html', {'groups' : all_groups})
+    return render_to_response(request, 'groupmanagement/yourgroups.html', {'groups' : all_groups})
 
 @csrf_exempt
 def groupActionsView(request, placeholder):
@@ -36,7 +36,7 @@ def groupActionsView(request, placeholder):
     lastOccurence = page_path.rfind('/')
     g_id = int(page_path[lastOccurence+1:])
     g = Group.objects.get(id=g_id)
-    return render(request, 'groupmanagement/groupActions.html', {'name' : g.name, 'g_id' : g_id})
+    return render_to_response(request, 'groupmanagement/groupActions.html', {'name' : g.name, 'g_id' : g_id})
 
 @csrf_exempt
 def addMember(request):
@@ -68,6 +68,9 @@ def addReports(request):
         addedReport = report.objects.get(title=request.POST.get('selected_report'))
         groupR = GroupReports.objects.create(group=g_id, report_document=addedReport)
 
-    return render(request, 'groupmanagement/addReports.html', {'reports':reports, 'user': user, 'g_id':g_id})
+    return render_to_response(request, 'groupmanagement/addReports.html', {'reports':reports, 'user': user, 'g_id':g_id})
 
-
+@csrf_exempt
+def groupHome(request):
+    user = request.user
+    return render_to_response('groupmanagement/groupHome.html')

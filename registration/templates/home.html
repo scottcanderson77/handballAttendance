@@ -4,7 +4,6 @@
     <form method="post" action=".">{% csrf_token %}
     <input type="hidden" name="next" value="groups" />
     </form>
-    <a href="/createGroup/">Create Group</a><br/>
     {% if not SM %}
         <a href="/YourGroups">View your groups</a><br/>
     {% endif %}
@@ -14,9 +13,9 @@
     {% if SM %}
         <a href="/changeUserRoles/">Change User roles</a><br/>
     {% endif %}
-
+    <a href="/groupHome/">Grouping</a><br/>
+    <a href="/folderHome/">Foldering</a><br/>
     <a href="/reportHome/">Reporting</a><br/>
     <a href="/messageHome/">Messaging</a><br/>
-
 
 {% endblock %}
