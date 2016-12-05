@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
+
     {% block content %}
-        <p>Welcome to Create Report {{ user.username }} !!!</p>
+        <div class="container" align="center" style="font-size: medium">
+        <h1>Welcome to Create Report {{ user.username }} !!!</h1>
     <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
         <table border="0">
             {{ form.as_table }}
@@ -10,8 +10,8 @@
         </table>
         <input type="submit" name="createReport" value="Create Report"/>
     </form>
-    <a href="/reportHome/"> Report Home</a></br>
+    <a href="/reportHome/">Back</a></br>
     <a href="/home/"> Home</a></br>
-    <a href="/logout/">Logout</a></br>
+        </div>
 
 {% endblock %}

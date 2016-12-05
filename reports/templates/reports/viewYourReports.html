@@ -14,15 +14,9 @@
          {% for report in reports %}
             <tr></tr>
              {% if report.username_id_id == user.id %}
-<<<<<<< HEAD
-                 <form action="/viewReport/" method="post">{% csrf_token %}
-                <td><input type="submit" name ="selected_report" id= "title" value="{{ report.title }}"/> </td>
-{#                 <td><input type="submit" name = "{{ report.title }}" id= "title" value="title"/> </td>#}
-=======
                  <form action="/viewReportDescription/" method="post">{% csrf_token %}
                     <td><input type="submit" name="title" value="{{ report.title }}"/></td>
                     <td><input type="hidden" name="selected_report" id= "title" value="{{ report.title }}"/></td>
->>>>>>> ed6c99f444a398728c3bd6182566a00c4f624196
                  </form>
              {% endif %}
 

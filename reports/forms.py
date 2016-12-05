@@ -7,7 +7,7 @@ from django.forms import ModelForm
 class ReportForm(forms.Form):
     title = forms.CharField()
     short_description = forms.CharField(max_length=30)
-    detailed_description = forms.CharField(max_length=200)
+    detailed_description = forms.CharField(max_length=200, widget=forms.Textarea(attrs={'rows':4, 'cols':40}))
     is_private = forms.BooleanField(required=False)
     # document = forms.FileField(label='Select a file',
     #                            required=False)
@@ -27,11 +27,11 @@ class ReportForm(forms.Form):
     #     fields = ('title','detailed_description','short_description', 'document','is_private', 'location', 'is_encrypted', 'username_id' )
 class FileForm(forms.Form):
     document = forms.FileField(label='Select a file', required=False)
-    is_encrypted = forms.BooleanField(required=False)
+    is_encrypted = forms.BooleanField(required=False, label="Encrypt File")
     document2 = forms.FileField(label='Select a file', required=False)
-    is_encrypted2 = forms.BooleanField(required=False)
+    is_encrypted2 = forms.BooleanField(required=False, label="Encrypt FIle")
     document3 = forms.FileField(label='Select a file', required=False)
-    is_encrypted3 = forms.BooleanField(required=False)
+    is_encrypted3 = forms.BooleanField(required=False, label="Encrypt File")
 
 
 

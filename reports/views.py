@@ -21,15 +21,10 @@ import ast
 from django.utils.encoding import smart_str
 from Crypto.PublicKey import *
 from django.db.models import Q
-
-from django.contrib.auth.decorators import login_required
-
 import geoip2.database
-
 
 # Create your views here.
 @csrf_exempt
-
 def createReport(request):
     if request.method == 'POST':
         form = ReportForm(request.POST, request.FILES)
@@ -115,7 +110,6 @@ def createReport(request):
     )
 
 @csrf_exempt
-
 def encrypt_file(key, filename):
     print(key)
     file = settings.MEDIA_ROOT + "/" + filename
@@ -130,13 +124,9 @@ def encrypt_file(key, filename):
             return file
 
 @csrf_exempt
-
 def createFolder(request):
     reports = report.objects.all()
     username_id = request.user
-
-
-
     if request.method == 'POST':
         form = FolderForm(request.POST, request.FILES)
         selected = request.POST.getlist('selected_report[]')
@@ -161,7 +151,6 @@ def createFolder(request):
 
 
 @csrf_exempt
-
 def addToFolder(request):
     folder_title = request.POST.get('selected_folder')
     f = folder.objects.get(id=request.POST.get('selected_folder'))
@@ -194,7 +183,6 @@ def addToFolder(request):
 
 
 @csrf_exempt
-
 def renameFolder(request):
     folders = folder.objects.all()
     selected = request.POST.getlist('selected_folder[]')
@@ -220,7 +208,6 @@ def renameFolder(request):
     )
 
 @csrf_exempt
-
 def deleteFolder(request):
     folders = folder.objects.all()
     selected = request.POST.getlist('selected_folder[]')
@@ -252,7 +239,6 @@ def viewFolderContent(request):
     r = report.objects.all().filter(id__in=rep)
     return render(request, 'reports/viewFolderContent.html', {'r':r, 'folder_title': folder_title})
 
-
 def viewFolderDescription(request):
     user = request.user
     folder_title = request.POST.get("selected_folder")
@@ -272,15 +258,13 @@ def removeReports(request, folder_title, report_title):
 
 
 @csrf_exempt
-
 def viewFolder(request):
     user = request.user
     folders = folder.objects.all().filter(username_id_id=request.user.id)
     return render(request, 'reports/viewFolders.html', {'folders': folders, 'user': user})
 
 @csrf_exempt
-
-def viewPublicReport(request):
+def viewReport(request):
     user = request.user
     if user.is_superuser:
         reports = report.objects.all()
@@ -290,7 +274,6 @@ def viewPublicReport(request):
     return render(request, 'reports/viewReports.html', {'user': user, 'reports': reports, 'folders':folders})
 
 @csrf_exempt
-
 def viewReports(request):
     user = request.user
     title = request.POST.get("selected_report")
@@ -302,7 +285,6 @@ def viewReports(request):
     return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user, 'files': files, 'owner': owner})
 
 @csrf_exempt
-
 def download(request, file_name):
     file_path = settings.MEDIA_ROOT + '/' + file_name
     file_wrapper = FileWrapper(open(file_path, 'rb'))
@@ -321,7 +303,6 @@ def download(request, file_name):
 
 
 @csrf_exempt
-
 def viewYourReports(request):
     user = request.user
     reports = report.objects.all().filter(username_id=user)
@@ -330,7 +311,6 @@ def viewYourReports(request):
 
 
 @csrf_exempt
-
 def editReport(request):
     user = request.user
     title = request.POST.get("title")
@@ -354,7 +334,6 @@ def editReport(request):
     return render(request, 'reports/editReport.html', {'user': user, 'title': title, 'short': short, 'detailed':detailed, 'private': is_private})
 
 @csrf_exempt
-
 def deleteReport(request):
     user = request.user
     id = request.POST.get("id")
@@ -362,7 +341,6 @@ def deleteReport(request):
     return render(request, 'reports/viewYourReports.html', {'user':user})
 
 @csrf_exempt
-
 def searchReports(request):
     query_string = request.GET.get('q')
     loc = request.GET.get('location')
@@ -395,14 +373,12 @@ def searchReports(request):
         return render(request, 'reports/searchReports.html', {'results': results})
 
 
-@login_required()
+
 @csrf_exempt
 def reportHome(request):
     user = request.user
     return render_to_response("reports/reportHome.html", {"user":user})
 
-@login_required()
-@csrf_exempt
 def folderHome(request):
     user = request.user
     return render_to_response(("reports/folderHome.html", {"user":user}))

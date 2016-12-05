@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import login
 from registration.views import *
 from groupmanagement.views import *
 from reports.views import *
@@ -26,9 +26,8 @@ urlpatterns = [
          url(r'^createReport/$', createReport),
          url(r'^editReport/$', editReport),
          url(r'^viewYourReport/$', viewYourReports),
-         url(r'^view', viewPublicReport),
          url(r'^viewReportDescription/$', viewReports),
-         url(r'^viewReport/$', viewReports),
+         url(r'^viewReport/$', viewReport),
          url(r'^searchReport/$', searchReports),
          url(r'^deleteReport/$', deleteReport),
          url(r'^createFolder/$', createFolder),
@@ -57,5 +56,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
-
-
