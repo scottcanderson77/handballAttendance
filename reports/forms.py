@@ -9,8 +9,6 @@ class ReportForm(forms.Form):
     short_description = forms.CharField(max_length=30)
     detailed_description = forms.CharField(max_length=200)
     is_private = forms.BooleanField(required=False)
-    location = forms.CharField(max_length=30)
-    is_encrypted = forms.BooleanField(required=False)
     # document = forms.FileField(label='Select a file',
     #                            required=False)
     # document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Select a file', required=False)
@@ -28,10 +26,18 @@ class ReportForm(forms.Form):
     #     model = report
     #     fields = ('title','detailed_description','short_description', 'document','is_private', 'location', 'is_encrypted', 'username_id' )
 class FileForm(forms.Form):
-    document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Select a file', required=False)
+    document = forms.FileField(label='Select a file', required=False)
+    is_encrypted = forms.BooleanField(required=False)
+    document2 = forms.FileField(label='Select a file', required=False)
+    is_encrypted2 = forms.BooleanField(required=False)
+    document3 = forms.FileField(label='Select a file', required=False)
+    is_encrypted3 = forms.BooleanField(required=False)
+
+
+
     class Meta:
         model = Document
-        fields = {'document'}
+        fields = {'document', 'is_encrypted','document1', 'is_encrypted1','document3', 'is_encrypted3'}
 
 class FolderForm(forms.Form):
     title = forms.CharField()

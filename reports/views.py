@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from .forms import *
 from reports.models import *
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -21,7 +21,10 @@ import ast
 from django.utils.encoding import smart_str
 from Crypto.PublicKey import *
 from django.db.models import Q
+
 from django.contrib.auth.decorators import login_required
+
+import geoip2.database
 
 
 # Create your views here.
@@ -30,41 +33,71 @@ from django.contrib.auth.decorators import login_required
 def createReport(request):
     if request.method == 'POST':
         form = ReportForm(request.POST, request.FILES)
-        files = FileForm(request.FILES.getlist('document'))
+        files = FileForm(request.POST, request.FILES)
+        print(files)
         if form.is_valid() and files.is_valid():
+            reader = geoip2.database.Reader('/Users/Agnes/FileShare/geoip/GeoLite2-City.mmdb')
+            #ip = request.META.get('REMOTE_ADDR', None)
+            response = reader.city('128.143.22.36')
+            city = response.city.name
+            print(response.city.name)
             checked = False
-            encrypted = False
-        if request.POST.get("is_private", False):
-            checked =True
-            encrypted = True
-            if request.POST.get("is_encrypted", False):
-                encrypted = True
+            if request.POST.get("is_private", False):
+                checked =True
             # clean_title = form.clean('title')
             newdoc = report(title=form.cleaned_data['title'],
                 timestamp=timezone.now(),
                 short_description=form.cleaned_data['short_description'],
                 detailed_description=form.cleaned_data['detailed_description'],
                 is_private = checked,
-                # location= city,
-                is_encrypted = encrypted,
+                location=city,
                 username_id= request.user)
             newdoc.save()
-            file = request.FILES.getlist('document')
-            for f in file:
-                if newdoc.is_encrypted == True:
-                    pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
-                    #pubKeyOb = bytes(pubKey, 'utf-8')
-                    pubKeyOb = RSA.importKey(pubKey)
-                    newfile = Document(document=f, report_document=newdoc, name=f)
-                    newfile.save()
-                    enc = encrypt_file(pubKeyOb, str(newfile.document))
-                    Document.objects.filter(name=f).delete()
-                    os.remove(settings.MEDIA_ROOT + '/' + str(newfile.document))
-                    newfile2 = Document(document=enc, report_document=newdoc, name=enc)
-                    newfile2.save()
-                else:
-                    newfile = Document(document=f, report_document=newdoc, name=f)
-                    newfile.save()
+            if files.cleaned_data['is_encrypted'] == True:
+                f = files.cleaned_data['document']
+                pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
+                pubKeyOb = RSA.importKey(pubKey)
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted'])
+                newfile.save()
+                enc = encrypt_file(pubKeyOb, str(newfile.document))
+                Document.objects.filter(name=f).delete()
+                os.remove(settings.MEDIA_ROOT + '/' + str(newfile.document))
+                newfile2 = Document(document=enc, report_document=newdoc, name=enc, is_encrypted=files.cleaned_data['is_encrypted'])
+                newfile2.save()
+            elif files.cleaned_data['document']:
+                f = files.cleaned_data['document']
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted'])
+                newfile.save()
+            if files.cleaned_data['is_encrypted2'] == True:
+                f = files.cleaned_data['document2']
+                pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
+                pubKeyOb = RSA.importKey(pubKey)
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted2'])
+                newfile.save()
+                enc = encrypt_file(pubKeyOb, str(newfile.document))
+                Document.objects.filter(name=f).delete()
+                os.remove(settings.MEDIA_ROOT + '/' + str(newfile.document))
+                newfile2 = Document(document=enc, report_document=newdoc, name=enc, is_encrypted=files.cleaned_data['is_encrypted2'])
+                newfile2.save()
+            elif files.cleaned_data['document2']:
+                f = files.cleaned_data['document2']
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted2'])
+                newfile.save()
+            if files.cleaned_data['is_encrypted3'] == True:
+                f = files.cleaned_data['document3']
+                pubKey = UserProfile.objects.get(user_id=newdoc.username_id_id).publicKey
+                pubKeyOb = RSA.importKey(pubKey)
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted3'])
+                newfile.save()
+                enc = encrypt_file(pubKeyOb, str(newfile.document))
+                Document.objects.filter(name=f).delete()
+                os.remove(settings.MEDIA_ROOT + '/' + str(newfile.document))
+                newfile2 = Document(document=enc, report_document=newdoc, name=enc, is_encrypted=files.cleaned_data['is_encrypted3'])
+                newfile2.save()
+            elif files.cleaned_data['document3']:
+                f = files.cleaned_data['document3']
+                newfile = Document(document=f, report_document=newdoc, name=f, is_encrypted=files.cleaned_data['is_encrypted3'])
+                newfile.save()
 
 
     else:
@@ -72,7 +105,7 @@ def createReport(request):
         files = FileForm()
     variables = RequestContext(request, {
         'form': form,
-        'files': files,
+        'files': files
     })
 
 
@@ -130,23 +163,30 @@ def createFolder(request):
 @csrf_exempt
 @login_required
 def addToFolder(request):
-    reports = report.objects.all()
+    folder_title = request.POST.get('selected_folder')
+    f = folder.objects.get(id=request.POST.get('selected_folder'))
+    added = f.added_reports.all().values_list('id', flat=True)
+    added = list(added)
+
+    reports = report.objects.all().filter(username_id_id=request.user.id).values("title").exclude(id__in=added)
+    #filteredReports = list(reports)
+    #temp = []
+
     username_id = request.user
-    if request.method == 'POST':
+    if request.POST.get('selected_report[]'):
         # form = FolderForm(request.POST, request.FILES)
-        folder_title = request.POST.get('folder_title')
-        print(folder_title)
+        folder_title = request.POST.get('selected_folder')
         selectedReport = request.POST.getlist('selected_report[]')
-        filteredReports=[]
-        title = reports.title
-        if title not in folder.added_reports:
-            filteredReports.append(report.title)
         for sr in selectedReport:
             r = report.objects.get(title=sr)
-            folder.objects.get(title=folder_title).added_reports.add(r)
+            f.added_reports.add(r)
+            f.save()
+        added = f.added_reports.all().values_list('id', flat=True)
+        added = list(added)
+        reports = report.objects.all().filter(username_id_id=request.user.id).values("title").exclude(id__in=added)
     else:
         form = FolderForm()
-    variables = RequestContext(request, {'reports':reports})
+    variables = RequestContext(request, {'reports':reports, 'folder_title': folder_title})
 
     return render_to_response('reports/viewFolderDescription.html', variables,)
 
@@ -198,6 +238,19 @@ def deleteFolder(request):
         'reports/deleteFolder.html',
         variables,
     )
+def viewFolderContent(request):
+    if request.POST.get("remove"):
+        folder_title = request.POST.get("selected_folder")
+        report_title = request.POST.get("selected_report")
+        removeReports(request, folder_title, report_title)
+
+    folder_title = request.POST.get("selected_folder")
+    f = folder.objects.get(id=folder_title)
+    print(f)
+    rep = f.added_reports.all().values_list('id', flat=True)
+    rep = list(rep)
+    r = report.objects.all().filter(id__in=rep)
+    return render(request, 'reports/viewFolderContent.html', {'r':r, 'folder_title': folder_title})
 
 @login_required
 def viewFolderDescription(request):
@@ -208,13 +261,22 @@ def viewFolderDescription(request):
     # folders = folder.objects.get(title=title)
     return render(request, 'reports/viewFolderDescription.html', {'folder_title':folder_title, 'reports':reports})
 
+def removeReports(request, folder_title, report_title):
+    f = folder.objects.get(id=folder_title)
+    r = report.objects.all().filter(title=report_title).values_list('id', flat=True)
+    print(r)
+    #r = r.get('id')
+    f.added_reports.remove(r[0])
+    f.save()
+    # return redirect(viewFolderContent)
+
+
 @csrf_exempt
 @login_required
 def viewFolder(request):
     user = request.user
-    folders = folder.objects.all()
-    reports = folder.objects.all()
-    return render(request, 'reports/viewFolders.html', {'folders': folders, 'reports':reports, 'user': user})
+    folders = folder.objects.all().filter(username_id_id=request.user.id)
+    return render(request, 'reports/viewFolders.html', {'folders': folders, 'user': user})
 
 @csrf_exempt
 @login_required
@@ -303,10 +365,35 @@ def deleteReport(request):
 @login_required
 def searchReports(request):
     query_string = request.GET.get('q')
-    results = report.objects.annotate(
-        search=SearchVector('title', 'short_description', 'detailed_description'),
-    ).filter(search=query_string).exclude(is_private=True).order_by('timestamp')
-    return render(request,'reports/searchReports.html', {'results': results })
+    loc = request.GET.get('location')
+    start_date = request.GET.get('start-date') + ' 00:00:00.000000-00'
+    end_date = request.GET.get('end-date') + ' 00:00:00.000000-00'
+    if request.GET.get('q'):
+        results = report.objects.annotate(
+            search=SearchVector('title', 'short_description', 'detailed_description'),
+        ).filter(search=query_string).exclude(is_private=True).order_by('timestamp')
+        if request.GET.get('location'):
+            results = report.objects.annotate(
+                search=SearchVector('title', 'short_description', 'detailed_description'),
+            ).filter(search=query_string).filter(location=loc).exclude(is_private=True).order_by('timestamp')
+            if request.GET.get('start-date'):
+                results = report.objects.annotate(
+                    search=SearchVector('title', 'short_description', 'detailed_description'),
+                ).filter(search=query_string).filter(location=loc).filter(timestamp__range=(start_date,end_date)).exclude(is_private=True).order_by('timestamp')
+                return render(request, 'reports/searchReports.html', {'results': results})
+            return render(request,'reports/searchReports.html', {'results': results })
+        return render(request, 'reports/searchReports.html', {'results': results})
+    if request.GET.get('location'):
+        results = report.objects.all().filter(location=loc).exclude(is_private=True).order_by('timestamp')
+        if request.GET.get('start-date'):
+            results = report.objects.all().filter(location=loc).filter(timestamp__range=(start_date,end_date)).exclude(is_private=True).order_by('timestamp')
+            return render(request, 'reports/searchReports.html', {'results': results})
+        return render(request,'reports/searchReports.html', {'results': results })
+    if request.GET.get('start-date'):
+        print(request.GET.get('start-date'))
+        results = report.objects.all().filter(timestamp__range=(start_date, end_date)).exclude(is_private=True).order_by('timestamp')
+        return render(request, 'reports/searchReports.html', {'results': results})
+
 
 
 @csrf_exempt

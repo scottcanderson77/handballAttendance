@@ -15,12 +15,13 @@
 
 
 {#            </tr>#}
+
         {% for report in reports %}
             <form method="post" action="/addToFolder/" enctype="multipart/form-data">{% csrf_token %}
-             <input type="checkbox" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }}
+             <input type="checkbox" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }} <br>
                 {% endfor %}
             <input type="submit" name="createFolder" value="Add Report(s) to {{ folder_title }} Folder"/>
-                <input type="hidden" name="folder_title" value="{{ folder_title }}"/>
+                <input type="hidden" name="selected_folder" value="{{ folder_title }}"/>
 
             </form>
 

@@ -62,39 +62,43 @@ def addMember(request):
     # print(group)
     return HttpResponse(json.dumps({"g_id": groupID}), status=200, content_type="application/json")
 
-@login_required
-@csrf_exempt
-def createGroups(request):
-    users = User.objects.all()
-    print("yes")
-    print(users)
-    username_id = request.user
-    if request.method == 'POST':
-        form = GroupingForm(request.POST)
-        selected = request.POST.getlist('selected_user[]')
-        if form.is_valid():
-            group = Group.objects.create(
-                name=form.cleaned_data['name'],
-            )
-            group.save()
-            for user_selected in selected:
-                print(type (user_selected))
-                user = User.objects.get(username=user_selected)
-                print(type (user))
-                group.user_set.add(user)
-                group.save()
+# @login_required
+# @csrf_exempt
+# def createGroups(request):
+#     users = User.objects.all()
+#     print("yes")
+#     print(users)
+#     username_id = request.user
+#     if request.method == 'POST':
+#         form = GroupingForm(request.POST)
+#         selected = request.POST.getlist('selected_user[]')
+#         if form.is_valid():
+#             group = Group.objects.create(
+#                 name=form.cleaned_data['name'],
+#             )
+#             group.save()
+#             for user_selected in selected:
+#                 print(type (user_selected))
+#                 user = User.objects.get(username=user_selected)
+#                 print(type (user))
+#                 group.user_set.add(user)
+#                 group.save()
+#
+#
+#
+#     else:
+#         form = GroupingForm()
+#     variables = RequestContext(request, {
+#         'form':form, 'users':users
+#     })
+#     return render_to_response(
+#         'groupmanagement/createGroups.html',
+#         variables,
+#     )
+#
+#     group.save()
+#     return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")
 
-
-
-    else:
-        form = GroupingForm()
-    variables = RequestContext(request, {
-        'form':form, 'users':users
-    })
-    return render_to_response(
-        'groupmanagement/createGroups.html',
-        variables,
-    )
 
 @login_required
 @csrf_exempt
