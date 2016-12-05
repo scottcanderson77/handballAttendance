@@ -45,6 +45,7 @@ def addMember(request):
     user = User.objects.get(username=username)
     group = Group.objects.get(id=groupID)
     group.user_set.add(user)
+    group.save()
     return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")
 
 @csrf_exempt
