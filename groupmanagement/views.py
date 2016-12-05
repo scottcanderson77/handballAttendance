@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-@login_required
+
 def displayUsers(request, placeholder):
     users = User.objects.all()
     page_path = request.get_full_path()
@@ -27,7 +27,7 @@ def displayUsers(request, placeholder):
     # print(g_user_set)
     return render(request, 'groupmanagement/allusers.html', {'users' : users, 'current_user' : current_user, 'g_id' : g_id, 'groupUsers' : g_user_set})
 
-@login_required
+
 @csrf_exempt
 def viewGroups(request):
     current_user = request.user
@@ -37,7 +37,7 @@ def viewGroups(request):
 
     return render(request, 'groupmanagement/yourgroups.html', {'groups': all_groups})
 
-@login_required
+
 @csrf_exempt
 def groupActionsView(request, placeholder):
     page_path = request.get_full_path()
@@ -47,7 +47,7 @@ def groupActionsView(request, placeholder):
     g = Group.objects.get(id=g_id)
     return render(request, 'groupmanagement/groupActions.html', {'name': g.name, 'g_id': g_id})
 
-@login_required
+
 @csrf_exempt
 def addMember(request):
     username = request.POST.get('username')
@@ -100,7 +100,6 @@ def addMember(request):
 #     return HttpResponse(json.dumps({"g_id" : groupID}), status=200, content_type="application/json")
 
 
-@login_required
 @csrf_exempt
 def removeMember(request):
     username = request.POST.get('username')
@@ -110,7 +109,7 @@ def removeMember(request):
     group.user_set.remove(user)
     return HttpResponse(json.dumps({"g_id": groupID}), status=200, content_type="application/json")
 
-@login_required
+
 @csrf_exempt
 def addReports(request):
     user = request.user
@@ -125,7 +124,7 @@ def addReports(request):
     return render(request, 'groupmanagement/addReports.html',
                               {'reports': reports, 'user': user, 'g_id': g_id})
 
-@login_required
+
 @csrf_exempt
 def groupHome(request):
     user = request.user

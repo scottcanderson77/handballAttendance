@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 from registration.views import *
 from groupmanagement.views import *
 from reports.views import *
