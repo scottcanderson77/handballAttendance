@@ -3,13 +3,17 @@
 {#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
 {#{% block head %}Messaging{% endblock %}#}
 {% block content %}
+        <div class="container" align="center" style="font-size: large">
+
     <h1 id="messageh1">Messaging<i class="fa fa-comment-o fa-2x" aria-hidden="true"></i></h1>
     <p>Welcome {{ user.username }} !!!</p>
+    <ul style="list-style-type:none">
+        <li><a href="/createMessage/">Create New Message</a></li><br>
+        <li><a href="/allMessages/">Check Sent Message</a> Outbox {{ newS }}/{{ oldS }} (New)</li><br>
+        <li><a href="/checkMessage/">Check Recieved Message</a> Inbox {{ newR }}/{{ oldR }} (New)</li><br>
 
-    <a href="/allMessages/">Check Sent Message</a> Outbox {{ newS }}/{{ oldS }} (New)<br/>
-    <a href="/checkMessage/">Check Recieved Message</a> Inbox {{ newR }}/{{ oldR }} (New)<br/>
-    <a href="/createMessage/">Create New Message</a><br/>
-    <br/>
-    <br/>
-    <a href="/home/">Home</a><br/>
+        <br>
+    <button><a href="/home/">Back</a></button>
+</ul>
+        </div>
 {% endblock %}

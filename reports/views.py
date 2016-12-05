@@ -395,15 +395,14 @@ def searchReports(request):
         return render(request, 'reports/searchReports.html', {'results': results})
 
 
-
+@login_required()
 @csrf_exempt
-
 def reportHome(request):
     user = request.user
     return render_to_response("reports/reportHome.html", {"user":user})
 
+@login_required()
 @csrf_exempt
-
 def folderHome(request):
     user = request.user
     return render_to_response(("reports/folderHome.html", {"user":user}))

@@ -139,7 +139,7 @@ def checkMessage(request):
 
 
 @csrf_exempt
-
+@login_required()
 def messageHome(request):
     userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
     recMessage = []

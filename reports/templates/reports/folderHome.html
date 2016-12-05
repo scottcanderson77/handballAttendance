@@ -3,19 +3,23 @@
 {#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
 {#{% block head %}Messaging{% endblock %}#}
 {% block content %}
-    <h1 id="messageh1">Folders<i class="fa fa-folder-o fa-2x" aria-hidden="true"></i></h1>
-    <p>Welcome {{ user.username }} !!!</p>
+    <div class="container" align="center" style="font-size: large">
+            <h1 id="messageh1">Folders<i class="fa fa-folder-o fa-2x" aria-hidden="true"></i></h1>
+            <p>Welcome {{ user.username }} !!!</p>
+        <ul style="list-style-type:none">
+            <li><a href="/createFolder/">Create Folder</a></li>
+            <br>
 
-    <a href="/createFolder/">Create Folder</a>
-    </br>
-    <a href="/deleteFolder/">Delete Folder</a>
-    </br>
-{#    <a href="/viewReport/">View Reports</a>#}
-{#  this does not belong  </br>#}
-    <a href="/viewFolder/">View Folder</a>
-    </br>
-    <a href="/renameFolder/">Rename Folder</a>
-    <br/>
-    <br/>
-    <a href="/home/">Back</a><br/>
+            <li><a href="/deleteFolder/">Delete Folder</a></li>
+            <br>
+        {#    <a href="/viewReport/">View Reports</a>#}
+        {#  this does not belong  </br>#}
+            <li><a href="/viewFolder/">View Folder</a></li>
+            <br>
+            <li><a href="/renameFolder/">Rename Folder</a></li>
+        <br>
+
+            <button><a href="/home/">Back</a></button>
+        </ul>
+    </div>
 {% endblock %}

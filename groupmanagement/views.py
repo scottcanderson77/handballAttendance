@@ -126,6 +126,7 @@ def addReports(request):
 
 
 @csrf_exempt
+@login_required()
 def groupHome(request):
     user = request.user
     print(user)

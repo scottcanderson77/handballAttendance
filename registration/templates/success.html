@@ -4,8 +4,10 @@
  Registration Completed Successfully
 {% endblock %}
 {% block content %}
-    Thank you for registering.
-    <p>This is your private Key! <b><pre>{{private}}</pre></b>  Save it somewhere: </p>
-    <a hred="/privateKey"> Download Private Key</a>
-    <a href="/">Login</a>
+    <div class="container" align="center">
+        Thank you for registering.
+        <p>This is your private Key! <b><pre>{{private}}</pre>
+        <a hred="/privateKey"> Download Private Key</a><br>
+        <a class="btn btn-primary btn-medium" href="/">Login</a>
+    </div>
 {% endblock %}

@@ -3,24 +3,26 @@
 {#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
 {#{% block head %}Messaging{% endblock %}#}
 {% block content %}
-    <h1 id="messageh1">Reports <i class="fa fa-pencil fa-2x"></i></h1>
-    <p>Welcome {{ user.username }} !!!</p>
-    <ul>
-        <li><a href="/createReport/">Create Report</a></li>
+    <div class="container" align="center" style="font-size: large">
+        <h1 id="messageh1">Reports <i class="fa fa-pencil fa-2x"></i></h1>
+        <p>Welcome {{ user.username }} !!!</p>
+        <ul style="list-style-type:none">
+            <li><a href="/createReport/">Create Report</a></li>
 
-        </br>
-        <li><a href="/deleteReport/">Delete Reports</a></li>
-        </br>
-        <li><a href="/searchReport/">Search Reports</a></li>
-        </br>
-        <li><a href="/editReport/">Edit Reports</a></li>
-        <br/>
-        <li><a href="/viewYourReport/">View Your Report(s)</a></li>
-        <br>
-        <li list-style="none"><a href="/viewPublicReport/">View Public Report(s)</a></li>
-        <br/>
+            </br>
+            <li><a href="/deleteReport/">Delete Reports</a></li>
+            </br>
+            <li><a href="/searchReport/">Search Reports</a></li>
+            </br>
+            <li><a href="/editReport/">Edit Reports</a></li>
+            <br/>
+            <li><a href="/viewYourReport/">View Your Report(s)</a></li>
+            <br>
+            <li list-style="none"><a href="/viewPublicReport/">View Public Report(s)</a></li>
+            <br/>
 
-    <button><a href="/home/">Back</a></button>
-    </ul>
+        <button><a href="/home/">Back</a></button>
+        </ul>
+    </div>
 
 {% endblock %}
