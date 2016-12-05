@@ -31,7 +31,7 @@ def createReport(request):
         files = FileForm(request.POST, request.FILES)
         print(files)
         if form.is_valid() and files.is_valid():
-            reader = geoip2.database.Reader('/Users/Agnes/FileShare/geoip/GeoLite2-City.mmdb')
+            reader = geoip2.database.Reader(settings.BASE_DIR + '/geoip/GeoLite2-City.mmdb')
             #ip = request.META.get('REMOTE_ADDR', None)
             response = reader.city('128.143.22.36')
             city = response.city.name
@@ -344,8 +344,9 @@ def deleteReport(request):
 def searchReports(request):
     query_string = request.GET.get('q')
     loc = request.GET.get('location')
-    start_date = request.GET.get('start-date') + ' 00:00:00.000000-00'
-    end_date = request.GET.get('end-date') + ' 00:00:00.000000-00'
+    if request.GET.get('start-date') and request.GET.get('end=date'):
+        start_date = request.GET.get('start-date') + ' 00:00:00.000000-00'
+        end_date = request.GET.get('end-date') + ' 00:00:00.000000-00'
     if request.GET.get('q'):
         results = report.objects.annotate(
             search=SearchVector('title', 'short_description', 'detailed_description'),
@@ -354,7 +355,7 @@ def searchReports(request):
             results = report.objects.annotate(
                 search=SearchVector('title', 'short_description', 'detailed_description'),
             ).filter(search=query_string).filter(location=loc).exclude(is_private=True).order_by('timestamp')
-            if request.GET.get('start-date'):
+            if request.GET.get('start-date') and request.GET.get('end-date'):
                 results = report.objects.annotate(
                     search=SearchVector('title', 'short_description', 'detailed_description'),
                 ).filter(search=query_string).filter(location=loc).filter(timestamp__range=(start_date,end_date)).exclude(is_private=True).order_by('timestamp')
@@ -363,15 +364,15 @@ def searchReports(request):
         return render(request, 'reports/searchReports.html', {'results': results})
     if request.GET.get('location'):
         results = report.objects.all().filter(location=loc).exclude(is_private=True).order_by('timestamp')
-        if request.GET.get('start-date'):
+        if request.GET.get('start-date') and request.GET.get('end-date'):
             results = report.objects.all().filter(location=loc).filter(timestamp__range=(start_date,end_date)).exclude(is_private=True).order_by('timestamp')
             return render(request, 'reports/searchReports.html', {'results': results})
         return render(request,'reports/searchReports.html', {'results': results })
-    if request.GET.get('start-date'):
+    if request.GET.get('start-date') and request.GET.get('end-date'):
         print(request.GET.get('start-date'))
         results = report.objects.all().filter(timestamp__range=(start_date, end_date)).exclude(is_private=True).order_by('timestamp')
         return render(request, 'reports/searchReports.html', {'results': results})
-
+    return render(request, 'reports/searchReports.html', {})
 
 
 @csrf_exempt
