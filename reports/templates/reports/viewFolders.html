@@ -12,11 +12,14 @@
         </thead>
 
         <tbody>
+
          {% for folder in folders %}
             <tr>
             {% if folder.username_id_id == user.id  %}
+                <form action="/viewFolderDescription/" method="post">{% csrf_token %}
 
-            <td>{{ folder.title }} </td>
+                <td><input type="submit" name ="selected_folder" id= "title" value="{{ folder.title }}"/> </td>
+                </form>
 
                 {% for added in folder.added_reports.all  %}
                 <td>

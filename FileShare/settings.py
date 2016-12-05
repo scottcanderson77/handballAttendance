@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'stuff',
+        'NAME': 'FileShare',
         'USER' : 'postgres',
-        'PASSWORD' : 'were1234',
+        'PASSWORD' : '',
         'HOST' : 'localhost',
         'PORT' : ''
     }
@@ -128,7 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATIC_URL = '/static_cdn/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

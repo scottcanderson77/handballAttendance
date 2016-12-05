@@ -121,6 +121,31 @@ def createFolder(request):
 
 
 @csrf_exempt
+def addToFolder(request):
+    reports = report.objects.all()
+    username_id = request.user
+    if request.method == 'POST':
+        # form = FolderForm(request.POST, request.FILES)
+        folder_title = request.POST.get('folder_title')
+        print(folder_title)
+        selectedReport = request.POST.getlist('selected_report[]')
+        filteredReports=[]
+        title = reports.title
+        if title not in folder.added_reports:
+            filteredReports.append(report.title)
+        for sr in selectedReport:
+            r = report.objects.get(title=sr)
+            folder.objects.get(title=folder_title).added_reports.add(r)
+    else:
+        form = FolderForm()
+    variables = RequestContext(request, {'reports':reports})
+
+    return render_to_response('reports/viewFolderDescription.html', variables,)
+
+
+
+
+@csrf_exempt
 def renameFolder(request):
     folders = folder.objects.all()
     selected = request.POST.getlist('selected_folder[]')
@@ -164,6 +189,13 @@ def deleteFolder(request):
         variables,
     )
 
+def viewFolderDescription(request):
+    user = request.user
+    folder_title = request.POST.get("selected_folder")
+    selected = request.POST.getlist('selected_report[]')
+    reports = report.objects.all()
+    # folders = folder.objects.get(title=title)
+    return render(request, 'reports/viewFolderDescription.html', {'folder_title':folder_title, 'reports':reports})
 
 @csrf_exempt
 def viewFolder(request):
@@ -191,17 +223,6 @@ def viewReports(request):
     owner = User.objects.get(id=rs.username_id_id)
 
     print(owner.username)
-        #title = request.POST.getlist("selected_report[]")
-    #for report_selected in title:
-     #   rs = report.objects.get(title=report_selected)
-    #filename = os.path.realpath(rs.document)
-    #filename = "media/" + str(rs.document)
-    #f = open(filename, 'r')
-    #myFile = File(f)
-    #print(filename)
-    #wrapper = FileWrapper(File(filename))
-    #response = HttpResponse(myFile)
-    #response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
     return render(request, 'reports/viewReportDescription.html', {'rs': rs, 'user': user, 'files': files, 'owner': owner})
 
 @csrf_exempt
