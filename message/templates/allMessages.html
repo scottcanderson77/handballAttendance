@@ -1,24 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Sent Messages{% endblock %}
-{% block head %}<i class="fa-ul fa fa-shekel"></i>Sent Messsages{% endblock %}
+
 {% block content %}
     <div class="container" align="center" style="font-size: large">
+    <h1><i class="fa-ul fa fa-comment-o"></i>Sent Messsages</h1>
 
     <title>All Sent Messages</title>
-
-{#    <form method="post" action=".">#}
-{#        <p> {{ form.title}}</p>#}
-{#        <input type="submit" value="Send" />#}
-{#    </form>#}
-{#    </br>#}
-{#    <ul class="fa-ul">#}
-{#  <li><i class="fa-li fa fa-check-square"></i>List icons</li>#}
-{#  <li><i class="fa-li fa fa-check-square"></i>can be used</li>#}
-{#  <li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li>#}
-{#  <li><i class="fa-li fa fa-square"></i>in lists</li>#}
-{#    </ul>#}
     {% for message in messages %}
-    <ul class="fa-ul"><i class="fa-ul fa fa-shekel fa-spin"></i>
+    <i class="fa-ul fa fa-shekel fa-spin"></i>
     <a href= '{{message.id}}'><td>{{ message.message_title }}</td></a> <h>{{ message.receiver }}</h></ul>
 
     {% endfor %}

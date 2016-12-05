@@ -1,7 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Sent Messages{% endblock %}
-{% block head %}{{ message.message_title }}{% endblock %}
+    <div class="container" align="center" style="font-size: large">
+<h1>Sent Message(s)</h1>
+
+
+{% block head %}<div class="container" align="center" style="font-size: large">{{ message.message_title }}</div>{% endblock %}
+            <
+
 {% block content %}
+    <div class="container" align="center" style="font-size: large">
+
     <p>{{ message.message_body }}</p>
     <p> Sent To: {{ message.receiver }}</p>
     <p> By: {{ message.sender }}</p>
@@ -16,4 +23,6 @@
     <a href="/allMessages/">To Sent Messages</a> <br>
     <a href="/messageHome/">Message Home</a></br>
     <a href="/logout/">Logout</a>
+            </div>
+
 {% endblock %}
