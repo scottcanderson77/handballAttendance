@@ -34,7 +34,7 @@
 
                 <td><input type="submit" value="Edit Report"/> </td>
             </form>
-
+<br>
             <form action="/deleteReport/" method="post">{% csrf_token %}
                 <input type="hidden" name="id" value="{{ rs.id }}"/>
 

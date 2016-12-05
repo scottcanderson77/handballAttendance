@@ -1,24 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
     {% block content %}
-        <p>Welcome to Create Folder {{ user.username }} !!!</p>
+        <div class="container" align="center" style="font-size: large">
+        <p>Hello {{ username_id.username }} !!!</p>
+        <br>
     <form method="post" action="/createFolder/" enctype="multipart/form-data">{% csrf_token %}
         <table border="0">
             {{ form.as_table }}
         </table>
-        <input type="submit" name="createFolder" value="Create Folder"/>
+        Add Report(s) to Folder:
          {% for report in reports %}
-             <input type="checkbox" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }}
+
+              <input type="checkbox" class="custom-control-input" name="selected_report[]" value="{{ report.title }}"/> {{ report.title }}
 
                     {% endfor %}
+    <br>
+    <br>
+            <input type="submit" class="btn btn-primary" name="createFolder" value="Create Folder"/>
+
     </form>
+        <br>
         <a href="/viewReport/">View Reports</a></br>
         <a href="/viewFolder/">View Folders</a>
-        </br><a hred="/folderHome/">Folder Home</a>
-        </br><a href="/home/">Home</a>
-
         <br>
-    <a href="/logout/">Logout</a>
+            <a href="/folderHome/">Back</a></br>
+    <a href="/home/"> Home</a></br>
+
+        </div>
 
 {% endblock %}

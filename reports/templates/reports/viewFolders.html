@@ -1,36 +1,41 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
     {% block content %}
-        <p>Welcome to View Folders {{ user.username }} !!!</p>
-        <table border="1">
-        <thead>
-        <tr>
-            <th>Folder</th>
-            <th>Report</th>
-        </tr>
-        </thead>
+        <div class="container" align="center" style="font-size: large">
 
-        <tbody>
+        <p>Hello {{ user.username }} !!!</p>
+{#        <table border="1">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Folder</th>#}
+{#            <th>Report</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{##}
+{#        <tbody>#}
+        <h1>Folders(s)</h1>
+        <br>
+            <ul style="list-style-type:none" align="center">
 
          {% for folder in folders %}
-            <tr>
             {% if folder.username_id_id == user.id  %}
+                <li>
                 <form action="/viewFolderContent/" method="post">{% csrf_token %}
 
-                <td><input type="submit" name ="folder" id= "title" value="{{ folder.title }}"/> </td>
+                <i class="fa fa-folder-open-o fa-fw fa-3x" aria-hidden="true"></i><input type="submit" class="btn btn-primary btn-lg btn-vertical" name="folder" id= "title" value="{{ folder.title }}"/>
                     <input type="hidden" name="selected_folder" value="{{ folder.id }}"/>
                 </form>
+                <li>
 
             {% endif %}
-            </tr>
+
         {% endfor %}
-          </tbody>
-    </table>
+
+        <br>
         <a href="/createFolder/">Create Folder</a>
-        </br><a href="/renameFolder/">Rename a Folder</a>
+        </br><a href="/renameFolder/">Rename a Folder</a><br>
         <a href="/reportHome/">Back</a></br>
     <a href="/home/"> Home</a></br>
+    </ul>
+        </div>
 
-    <a href="/logout/">Logout</a>
 {% endblock %}

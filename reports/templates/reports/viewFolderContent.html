@@ -1,41 +1,41 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
-    {% block content %}
-        <p>Welcome to View Folders {{ user.username }} !!!</p>
-        <table border="1">
-        <thead>
-        <tr>
-            <th>Report</th>
-            <th></th>
-        </tr>
-        </thead>
 
-        <tbody>
+    {% block content %}
+        <div class="container" align="center" style="font-size: large">
+
+        <p>Hello {{ user.username }} !!!</p>
+        <h1>Report(s)</h1>
+
+            <ul style="list-style-type:none" align="center">
 
          {% for reports in r %}
-            <tr>
+            <li>
 
                 <form action="/viewReport/" method="post">{% csrf_token %}
-                    <td><input type="submit" name ="selected_report" id= "title" value="{{ reports.title }}"/> </td>
+                    <input type="submit" name ="selected_report" id= "title" value="{{ reports.title }}"/>
                 </form>
+             </li>
+             <li>
                 <form action="/viewFolderContent/" method="post">{% csrf_token %}
                     <td><input type="submit" name ="remove" value="remove"/>
-                    <input type="hidden" name ="selected_report" id= "report" value="{{ reports.title }}"/> </td>
-                    <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/> </td>
+                    <input type="hidden" name ="selected_report" id= "report" value="{{ reports.title }}"/>
+                    <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/>
                 </form>
+             </li>
         {% endfor %}
           </tbody>
-    </table>
+        <li>
         <form action="/addToFolder/" method="post">{% csrf_token %}
             <td><input type="submit" name="delete" value="Add"/></td>
 {#                <input type="hidden" name ="selected_report" id= "report" value="{{ reports.title }}"/> </td>#}
-                <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/> </td>
+                <input type="hidden" name ="selected_folder" id= "folder" value="{{ folder_title }}"/> </ul>
             </form>
+            </li>
+
         <a href="/createFolder/">Create Folder</a>
         </br><a href="/renameFolder/">Rename a Folder</a>
 
-<br>        </br><a href="/home/">Home</a></br>
-
-    <a href="/logout/">Logout</a>
+<br>   <a href="/home/">Home</a></br>
+    </ul>
+        </div>
 {% endblock %}

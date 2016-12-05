@@ -3,7 +3,7 @@
             <div class="container" align="center" style="font-size: large">
 
         <p> Hello {{ user.username }} !!!</p>
-            <h1>Reports You have Access to:</h1>
+            <h1>Report(s) You have Access to:</h1>
 
 
 
@@ -12,7 +12,7 @@
             <br>
              {% if report.username_id_id == user.id %}
                  <form action="/viewReportDescription/" method="post">{% csrf_token %}
-                    <input type="submit" class="btn btn-primary btn-lg " name="title" value="{{ report.title }}"/>
+                    <input type="submit" class="btn btn-primary btn-lg" name="title" value="{{ report.title }}"/>
                     <input type="hidden" name="selected_report" id= "title" value="{{ report.title }}"/>
                  </form>
              {% endif %}
@@ -24,7 +24,8 @@
             <br>
        <a href="/reportHome/">Back</a></br>
     <a href="/home/"> Home</a></br>
-        </ul>    </div>
+        </ul>
+            </div>
 
 
 {% endblock %}

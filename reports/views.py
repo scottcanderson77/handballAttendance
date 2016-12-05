@@ -141,7 +141,7 @@ def createFolder(request):
     else:
         form = FolderForm()
     variables = RequestContext(request, {
-        'form': form, 'reports':reports
+        'form': form, 'reports':reports, 'username_id':username_id,
     })
 
     return render_to_response(
