@@ -10,12 +10,11 @@
        <ul style="list-style-type:none">
          {% for report in reports %}
             <br>
-             {% if report.username_id_id == user.id %}
                  <form action="/viewReportDescription/" method="post">{% csrf_token %}
                     <input type="submit" class="btn btn-primary btn-lg" name="title" value="{{ report.title }}"/>
                     <input type="hidden" name="selected_report" id= "title" value="{{ report.title }}"/>
                  </form>
-             {% endif %}
+
 
 
 

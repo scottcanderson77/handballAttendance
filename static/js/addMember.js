@@ -42,3 +42,31 @@ function changeRole(username, isSM) {
         }
     });
 }
+
+function suspendUser(username, isSus){
+    $.ajax({
+        url : 'http://127.0.0.1:8000/UpdateSuspension/',
+        type : 'POST',
+        data : { 'username' : username.innerHTML, 'isSus' : true },
+        success : function (data){
+           console.log(data);
+        },
+        error : function () {
+           alert('Could not make post request')
+        }
+    });
+}
+
+function reinstateUser(username) {
+    $.ajax({
+        url : 'http://127.0.0.1:8000/UpdateSuspension/',
+        type : 'POST',
+        data : { 'username' : username.innerHTML, 'isSus' : false },
+        success : function (data){
+           console.log(data);
+        },
+        error : function () {
+           alert('Could not make post request')
+        }
+    });
+}

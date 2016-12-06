@@ -7,7 +7,7 @@
 
     <h1 id="messageh1">Groups<i class="fa fa-cubes fa-2x"></i></h1>
     <p>Welcome {{ user.username }} !!!</p>
-
+        {% if not Suspended %}
          <ul style="list-style-type:none">
              <br>
              <li><a href="/createGroup/">Create Group</a></li>
@@ -24,5 +24,9 @@
          <br>
     <button><a href="/home/">Back</a></button>
             </ul>
+            {% endif %}
+            {% if Suspended %}
+                <p>You have been suspended. Please contact a Site Manager with any queries.</p>
+            {% endif %}
     </div>
 {% endblock %}ack</a><br/>

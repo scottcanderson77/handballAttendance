@@ -25,6 +25,7 @@ def register(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
+                #is_superuser=True
 
             )
             print(private)
@@ -65,10 +66,10 @@ def logout_page(request):
 def home(request):
     isSuperUser = False
     if request.user.is_superuser: isSuperUser = True
-
+    UP = UserProfile.objects.get(id=request.user.id)
     return render_to_response(
         'home.html',
-        {'user': request.user, 'SM' : isSuperUser}
+        {'user': request.user, 'SM' : isSuperUser, 'Suspended' : UP.isSuspended}
     )
 
 @csrf_exempt
@@ -118,8 +119,34 @@ def updatePrivilege(request):
 
 @csrf_exempt
 def privateKeyDownload(request, priv):
-    print("scott")
     response = HttpResponse(priv)
     response['content_type'] = 'application/txt'
     response['Content-Disposition'] = 'attachment; filename=myfile.zip'
     return response
+
+def suspendUsers(request):
+    current_user = request.user
+    AllUsers = User.objects.all()
+    return render(request, 'registration/SuspendUser.html', {'current_user' : current_user, 'AllUsers': AllUsers})
+
+def reinstateUsers(request):
+    current_user = request.user
+    AllUsers = User.objects.all()
+    return render(request, 'registration/ReinstateUser.html', {'current_user' : current_user, 'AllUsers': AllUsers})
+
+
+
+@csrf_exempt
+def UpdateSuspension(request):
+    username = request.POST.get('username')
+    isSus = request.POST.get('isSus')
+    user = User.objects.get(username=username)
+    UP = UserProfile.objects.get(id=user.id)
+    if isSus == 'true':isSus = True
+    else:isSus = False
+
+    if isSus:UP.isSuspended = True
+    else:UP.isSuspended = False
+
+    UP.save()
+    return HttpResponse(json.dumps(""), status=200, content_type="application/json")

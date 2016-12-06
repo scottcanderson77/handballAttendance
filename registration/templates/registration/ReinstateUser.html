@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <script src="../../../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../static/js/addMember.js"></script>
+</head>
+<body>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Users</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in AllUsers %}
+            {% with user.username as uName %}
+            <tr>
+            {% if not user.id == current_user.id %}
+                <td id="{{ uName }}">{{ uName }}</td>
+                <td>{{ user.email }}</td>
+                <td><button onclick="reinstateUser({{ uName }})">Remove Suspension</button></td>
+            {% endif %}
+            </tr>
+            {% endwith %}
+        {% endfor %}
+
+        </tbody>
+    </table>
+<a href="/logout/">Logout</a>
+<a href="/">Back</a>
+</body>
+</html>

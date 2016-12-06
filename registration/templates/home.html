@@ -7,17 +7,27 @@
     <form method="post" action=".">{% csrf_token %}
     <input type="hidden" name="next" value="groups" />
     </form>
-
+    {% if not Suspended %}
     {% if SM %}
         <a href="/YourGroups">View All Groups</a><br/>
     {% endif %}
     {% if SM %}
         <a href="/changeUserRoles/">Change User roles</a><br/>
     {% endif %}
+     {%  if SM %}
+        <a href="/suspendUsers/">Suspend Users</a><br/>
+    {% endif %}
+    {%  if SM %}
+        <a href="/reinstateUsers/">Reinstate Users</a><br/>
+    {% endif %}
     <a href="/groupHome/">Groups</a><br/>
     <a href="/folderHome/">Folders</a><br/>
     <a href="/reportHome/">Reports</a><br/>
     <a href="/messageHome/">Messaging</a><br/>
+    {% endif %}
+    {% if Suspended %}
+        <p>You have been suspended. Please contact a Site Manager with any queries</p>
+    {% endif %}
 
     </div>
 

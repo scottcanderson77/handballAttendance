@@ -155,7 +155,10 @@ def messageHome(request):
     if(int(newS) < 0):
         newS = 0
 
-    return render_to_response('messageHome.html', {'user': request.user, 'userPro': userPro, 'newR':newR, 'newS':newS, 'oldR':oldR, 'oldS':oldS})
+    UP = UserProfile.objects.get(id=request.user.id)
+
+    return render_to_response('messageHome.html', {'user': request.user, 'userPro': userPro, 'newR':newR,
+                                                   'newS':newS, 'oldR':oldR, 'oldS':oldS, 'Suspended' : UP.isSuspended})
 
 @csrf_exempt
 

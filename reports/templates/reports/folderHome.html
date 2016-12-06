@@ -6,6 +6,7 @@
     <div class="container" align="center" style="font-size: large">
             <h1 id="messageh1">Folders<i class="fa fa-folder-o fa-2x" aria-hidden="true"></i></h1>
             <p>Welcome {{ user.username }} !!!</p>
+        {% if not Suspended %}
         <ul style="list-style-type:none">
             <li><a href="/createFolder/">Create Folder</a></li>
             <br>
@@ -21,5 +22,9 @@
 
             <button><a href="/home/">Back</a></button>
         </ul>
+    {% endif %}
+    {% if Suspended %}
+        <p>You have been suspended. Please contact a Site Manager with any queries.</p>
+    {% endif %}
     </div>
 {% endblock %}

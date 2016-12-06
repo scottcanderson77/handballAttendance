@@ -6,6 +6,7 @@
     <div class="container" align="center" style="font-size: large">
         <h1 id="messageh1">Reports <i class="fa fa-pencil fa-2x"></i></h1>
         <p>Welcome {{ user.username }} !!!</p>
+        {% if not Suspended %}
         <ul style="list-style-type:none">
             <li><a href="/createReport/">Create Report</a></li>
 
@@ -23,6 +24,11 @@
 
         <button><a href="/home/">Back</a></button>
         </ul>
+        {% endif %}
+        {% if Suspended %}
+            <p>You have been suspended. Please contact a Site Manager with any queries.</p>
+
+        {% endif %}
     </div>
 
 {% endblock %}

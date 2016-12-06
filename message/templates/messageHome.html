@@ -7,12 +7,18 @@
 
     <h1 id="messageh1">Messaging<i class="fa fa-comment-o fa-2x" aria-hidden="true"></i></h1>
     <p>Welcome {{ user.username }} !!!</p>
+    {% if not Suspended %}
     <ul style="list-style-type:none">
         <li><a href="/createMessage/">Create New Message</a></li><br>
         <li><a href="/allMessages/">Check Sent Message</a> Outbox {{ newS }}/{{ oldS }} (New)</li><br>
         <li><a href="/checkMessage/">Check Recieved Message</a> Inbox {{ newR }}/{{ oldR }} (New)</li><br>
 
     <button><a href="/home/">Back</a></button>
+    {% endif %}
+
+    {% if Suspended %}
+        <p>You have been suspended. Please contact a Site Manager with any queries.</p>
+    {% endif %}
 </ul>
         </div>
 {% endblock %}
