@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Your groups</title>
-</head>
+{% extends "base.html" %}
+
+    {% block content %}
+                <div class="container" align="center" style="font-size: large">
 <body>
-<ul>
+
+<ul style="list-style-type:none" align="center">
+
+    <h1>Group(s):</h1>
     {% for group in groups %}
-        <li><a href="/group/{{ group.id }}">{{ group.name }}</a></li>
+        <li>Click Me for Group Actions<i class="fa fa-arrow-right" aria-hidden="true"></i>
+<a href="/group/{{ group.id }}">{{ group.name }} </a></li>
     {% endfor %}
 
     </br>
@@ -16,4 +18,5 @@
 
 </ul>
 </body>
-</html>
+                </div>
+{% endblock %}

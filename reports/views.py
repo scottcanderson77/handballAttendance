@@ -22,6 +22,9 @@ from django.utils.encoding import smart_str
 from Crypto.PublicKey import *
 from django.db.models import Q
 import geoip2.database
+from groupmanagement.models import *
+from django.contrib.auth.models import User, Group
+
 
 # Create your views here.
 @csrf_exempt
@@ -272,7 +275,8 @@ def viewReport(request):
     if user.is_superuser:
         reports = report.objects.all()
     else:
-        reports = report.objects.all().filter(is_private="False")
+        reports = report.objects.all().filter(is_private=False)
+        print(reports)
     folders = folder.objects.all()
     return render(request, 'reports/viewReports.html', {'user': user, 'reports': reports, 'folders':folders})
 
@@ -309,7 +313,19 @@ def download(request, file_name):
 def viewYourReports(request):
     user = request.user
     reports = report.objects.all().filter(username_id=user)
+    #At this point reports has all the reports created by the current user
     folders = folder.objects.all().filter(username_id=user)
+    # for report_document in report.objects.all():
+    #     for group in report_document.groupreports_set.select_related().all():
+
+    # print()
+
+
+
+    #We have to append all the reports that are not created by the user but ones that he has  access to
+
+
+
     return render(request, 'reports/viewYourReports.html', {'reports':reports, 'user': user, 'folders':folders })
 
 

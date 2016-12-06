@@ -9,7 +9,7 @@ class report(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     short_description = models.CharField(max_length=30)
     detailed_description = models.CharField(max_length=200)
-    is_private = models.BooleanField(default="False")
+    is_private = models.BooleanField(default=False)
     location = models.CharField(max_length=100, default="Virginia")
     username_id = models.ForeignKey(User, null=True, blank=True)
 

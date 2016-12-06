@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
+
     {% block content %}
+            <div class="container" align="center" style="font-size: large">
+
         <p>Welcome to Create Group{{ user.username }} !!!</p>
     <form method="post" action="/createGroup/">{% csrf_token %}
         <table border="0">
@@ -13,12 +14,15 @@
 
          {% endfor %}
     </form>
+
         <a href="/viewReport/">View Reports</a></br>
         <a href="/viewFolder/">View Folders</a>
         </br><a hred="/folderHome/">Folder Home</a>
         </br><a href="/home/">Home</a>
+        <br><a href="/groupHome/">Group Home</a>
 
         <br>
     <a href="/logout/">Logout</a>
+            </div>
 
 {% endblock %}

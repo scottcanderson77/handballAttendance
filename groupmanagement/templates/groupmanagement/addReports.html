@@ -1,14 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
+
     {% block content %}
-        <p>Welcome to View Reports {{ user.username }} !!!</p>
+                <div class="container" align="center" style="font-size: large">
+
+        <p>Welcome {{ user.username }} !!!</p>
         <table border="1">
-        <thead>
-        <tr>
-            <th>Report</th>
-        </tr>
-        </thead>
+
 
         <tbody>
          {% for report in reports %}
@@ -28,5 +25,6 @@
           </tbody>
     </table>
 <br>
-    <a href="/logout/">Logout</a>
+    <a href="/home/">Home</a>
+                </div>
 {% endblock %}

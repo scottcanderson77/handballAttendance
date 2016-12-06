@@ -8,13 +8,13 @@
        <ul style="list-style-type:none">
          {% for report in reports %}
             <br>
-             {% if report.username_id_id == user.id %}
+{#             {% if report.username_id_id == user.id %}#}
                  <form action="/viewReportDescription/" method="post">{% csrf_token %}
 
                 <input type="submit" class="btn btn-primary btn-lg " name ="selected_report" id= "title" value="{{ report.title }}"/>
 {#                 <td><input type="submit" name = "{{ report.title }}" id= "title" value="title"/> </td>#}
                  </form>
-             {% endif %}
+{#             {% endif %}#}
 
 
         {% endfor %}

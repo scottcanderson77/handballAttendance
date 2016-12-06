@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
+{% extends "base.html" %}
+
+    {% block content %}
+                <div class="container" align="center" style="font-size: large">
 <body>
-<ul>
-    <li><a href="/allusers/{{ g_id }}">Add member</a></li>
+
+<ul style="list-style-type:none" align="center">
+    <h1>Group Actions:</h1>
+
+    <li><button><a href="/allusers/{{ g_id }}">Add member</a></button></li>
+    <br>
     <form action="/addReports/" method="post"> {% csrf_token %}
         <input type="hidden" name="id" value="{{ g_id }}"/>
                 <input type="hidden" name="hid" value="{{ g_id }}"/>
 
         <input type="submit" value="Add Reports"/>
     </form>
-</ul>
-</body>
-</html>
-    </br>
-    </br>
+
     <a href="/home/"> Home</a>
+    </ul>
+                    </div>
+                    {% endblock %}
 
