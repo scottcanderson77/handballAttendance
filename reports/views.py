@@ -316,17 +316,15 @@ def viewYourReports(request):
     #At this point reports has all the reports created by the current user
     folders = folder.objects.all().filter(username_id=user)
     # for report_document in report.objects.all():
-    #     for group in report_document.groupreports_set.select_related().all():
+    list=[]
+    if user.is_superuser:
+        list= report.objects.all()
+    list.append(report.objects.filter(username_id=user))
+    for group in user.groups.all():
+        for set in group.groupreports_set.all():
+            list.append(set.report_document)
 
-    # print()
-
-
-
-    #We have to append all the reports that are not created by the user but ones that he has  access to
-
-
-
-    return render(request, 'reports/viewYourReports.html', {'reports':reports, 'user': user, 'folders':folders })
+    return render(request, 'reports/viewYourReports.html', {'reports':list, 'user': user, 'folders':folders })
 
 
 @csrf_exempt
