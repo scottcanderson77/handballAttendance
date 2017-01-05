@@ -158,10 +158,9 @@ def messageHome(request):
     UP = UserProfile.objects.get(id=request.user.id)
 
     return render_to_response('messageHome.html', {'user': request.user, 'userPro': userPro, 'newR':newR,
-                                                   'newS':newS, 'oldR':oldR, 'oldS':oldS, 'Suspended' : UP.isSuspended})
+                                                   'newS':newS, 'oldR':oldR, 'oldS':oldS, 'Suspended': UP.isSuspended})
 
 @csrf_exempt
-
 def detail(request, message_id):
     message = Message.objects.get(pk = message_id)
     decrypted = "nothing decrypted"

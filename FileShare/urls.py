@@ -4,6 +4,7 @@ from registration.views import *
 from groupmanagement.views import *
 from reports.views import *
 from message.views import *
+from practice.views import *
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -54,6 +55,7 @@ urlpatterns = [
          url(r'^reportHome/$', reportHome, name="report"),
          url(r'^folderHome/$', folderHome, name="folder"),
          url(r'^groupHome/$', groupHome, name="group"),
+         url(r'^practiceHome/$', practiceHome),
 
 ]
 

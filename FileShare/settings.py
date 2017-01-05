@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'FileShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'CS3240DB',
+        'NAME': 'handball',
         'USER' : 'postgres',
-        'PASSWORD' : 'kam@@kes96',
+        'PASSWORD' : 'were1234',
         'HOST' : 'localhost',
         'PORT' : ''
     }
