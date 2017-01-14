@@ -3,14 +3,14 @@
 
     <div class="container" align="center" style="font-size: large">
 
-    <h1> <i class="fa fa-file"aria-hidden="true"></i>Welcome to FileShare {{ user.username }} </h1>
+    <h1> <i class="fa fa-circle-o" aria-hidden="true"></i> Welcome To Handball {{ user.username }} </h1>
     <form method="post" action=".">{% csrf_token %}
     <input type="hidden" name="next" value="groups" />
     </form>
     {% if not Suspended %}
-    {% if SM %}
-        <a href="/YourGroups">View All Groups</a><br/>
-    {% endif %}
+{#    {% if SM %}#}
+{#        <a href="/YourGroups">View All Groups</a><br/>#}
+{#    {% endif %}#}
     {% if SM %}
         <a href="/changeUserRoles/">Change User roles</a><br/>
     {% endif %}
@@ -20,11 +20,15 @@
     {%  if SM %}
         <a href="/reinstateUsers/">Reinstate Users</a><br/>
     {% endif %}
-    <a href="/groupHome/">Groups</a><br/>
-    <a href="/folderHome/">Folders</a><br/>
-    <a href="/reportHome/">Reports</a><br/>
-    <a href="/messageHome/">Messaging</a><br/>
-    <a href="/practiceHome/">Practice Sign In</a>
+{#    <a href="/groupHome/">Groups</a><br/>#}
+{#    <a href="/folderHome/">Folders</a><br/>#}
+{#    <a href="/reportHome/">Reports</a><br/>#}
+        <br>
+     <a href="/practiceHome/">Practice Sign In</a>
+        <br>
+        <br>
+     <a href="/messageHome/">Messaging</a><br/>
+
     {% endif %}
     {% if Suspended %}
         <p>You have been suspended. Please contact a Site Manager with any queries</p>

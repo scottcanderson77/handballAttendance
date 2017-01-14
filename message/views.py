@@ -36,7 +36,7 @@ def createMessage(request):
                 body = bytes(form.cleaned_data['body'], 'utf-8')
                 body = pubKeyOb.encrypt(body, 32)
 
-
+                print("work")
                 message = Message.objects.create(
                     receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
                     sender=user,  # User.objects.get(username__iexact=request.user),
@@ -45,6 +45,7 @@ def createMessage(request):
 
                 )
             if form.cleaned_data['encrypt'] == False:
+                print("work")
                 message = Message.objects.create(
                     receiver=User.objects.get(username__iexact=form.cleaned_data['sendToUser']),
                     sender=user,  # User.objects.get(username__iexact=request.user),
@@ -182,7 +183,6 @@ def detail(request, message_id):
 
 
 @csrf_exempt
-
 def deleteMessage(request, message_id):
     userPro = UserProfile.objects.get(user__username__iexact=request.user.username)
     if Message.objects.get(pk = message_id).sender == request.user:

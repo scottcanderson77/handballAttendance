@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'groupmanagement',
     'reports',
     'message',
+    'practice'
 ]
 
 MIDDLEWARE_CLASSES = [

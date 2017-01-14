@@ -27,6 +27,8 @@ class RegistrationForm(forms.Form):
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
         label=_("Password (again)"))
 
+    teamPassword = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Team Password"))
+
     def clean_username(self):
         try:
             user = User.objects.get(username__iexact=self.cleaned_data['username'])
@@ -39,6 +41,9 @@ class RegistrationForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
+
+
+
 
 class GroupForm(forms.ModelForm):
     class Meta:

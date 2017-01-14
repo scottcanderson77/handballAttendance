@@ -20,21 +20,20 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            Member = False
             private = RSA.generate(1024, Random.new().read)
+            if form.cleaned_data['teamPassword'] == "Bartels":
+                Member = True
             user = User.objects.create_user(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1'],
-                email=form.cleaned_data['email'],
-                #is_superuser=True
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1'],
+                    email=form.cleaned_data['email'],
+                    #is_superuser=True
 
             )
-            print(private)
-            print(private.exportKey())
-            UserProfile.objects.create(user=user, privateKey=private.exportKey(), publicKey=private.publickey().exportKey())
-            #print(private.exportKey())
+            UserProfile.objects.create(user=user, privateKey=private.exportKey(), publicKey=private.publickey().exportKey(), isTeamMember=Member)
             priv = private.exportKey('PEM')
             priv_KEY = binascii.b2a_qp(priv).decode('latin_1')
-            #print(priv_KEY)
             file = open("privateKeyDowload.txt","w")
             file.write(str(priv))
             privateKeyDownload(request, priv)

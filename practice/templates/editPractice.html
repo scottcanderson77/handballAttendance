@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+    <div class="container" align="center" style="font-size: large">
+
+
+{% block content %}
+    <div class="container" align="center" style="font-size: large">
+    <h1>Edit a Practice</h1>
+            <form method="post" action=".">
+                <p> New Title   {{ form.title }}</p>
+                <p> New Short Description    {{ form.short_description }}</p>
+                <input class="btn btn-primary" type="submit" value="Send" />
+            </form>
+            </br>
+            <a href="/practiceHome/">Practice Home</a></br>
+            <a href="/logout/">Logout</a></br>
+
+    <a href="/viewPractices/">View Practices</a> <br>
+    <a href="/practiceHome/">Practice Home</a></br>
+    <a href="/logout/">Logout</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href= '/askDeletePractice/{{practice.id}}'><td> Delete {{ practice.title }}</td></a>
+    </div>
+    </div>
+{% endblock %}

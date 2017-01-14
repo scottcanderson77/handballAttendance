@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+    {% block content %}
+        <div class="container" align="center" style="font-size: large">
+        <h1>Create a Practice</h1>
+            <form method="post" action=".">
+                <p> Title   {{ form.title }}</p>
+                <p> Short Descripts    {{ form.short_description }}</p>
+                <input class="btn btn-primary" type="submit" value="Send" />
+            </form>
+            </br>
+            <a href="/practiceHome/">Practice Home</a></br>
+            <a href="/logout/">Logout</a></br>
+    </div>
+
+{% endblock %}

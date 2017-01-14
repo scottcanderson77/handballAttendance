@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+    {% block content %}
+        <div class="container" align="center" style="font-size: large">
+        <p>Hello {{ user.username }}, Welcome To The Practices</p>
+
+       <ul style="list-style-type:none">
+
+    {% for practice in practices %}
+        <a href= '/viewPractices/{{practice.id}}'><td>{{ practice.title }}</td></a>
+        <br>
+
+    {% endfor %}
+       <br>
+
+    <a href="/practiceHome/">Practices Home</a></br>
+    <a href="/home/"> Home</a></br>
+       </ul></div>
+{% endblock %}

@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Practice</title>
-</head>
-<body>
-<p> YO yo</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{#{% block title %}Messaging{% endblock %}{% block icon %}<i class="fa fa-comment-o fa-5x" aria-hidden="true"></i>{%  endblock %}#}
+{#{% block head %}Messaging{% endblock %}#}
+{% block content %}
+        <div class="container" align="center" style="font-size: large">
+
+    <h1 id="messageh1">Practices<i class="fa fa-clipboard fa-2x" aria-hidden="true"></i></h1>
+    {% if not Suspended %}
+    <ul style="list-style-type:none">
+        <br>
+        <li><a href="/viewPractices/">View Practices</a></li><br>
+        <br>
+        <br>
+        <li><a href="/createPractice/">Create New Practice</a></li><br>
+    <button><a href="/home/">Back</a></button>
+    {% endif %}
+
+    {% if Suspended %}
+        <p>You have been suspended. Please contact a Site Manager with any queries.</p>
+    {% endif %}
+</ul>
+        </div>
+{% endblock %}

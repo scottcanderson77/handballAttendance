@@ -56,6 +56,14 @@ urlpatterns = [
          url(r'^folderHome/$', folderHome, name="folder"),
          url(r'^groupHome/$', groupHome, name="group"),
          url(r'^practiceHome/$', practiceHome),
+         url(r'^createPractice/$', createPractice),
+         url(r'^viewPractices/$', viewPractices),
+         url(r'^viewPractices/(?P<practice_id>[0-9]+)/$', practiceDetail, name="detail"),
+         url(r'^deletePractice/(?P<practice_id>[0-9]+)/$', deletePractice, name="delete"),
+         url(r'^askDeletePractice/(?P<practice_id>[0-9]+)/$', askDeletePractice, name="delete"),
+         url(r'^editPractice/(?P<practice_id>[0-9]+)/$', editPractice),
+         url(r'^signInPractice/(?P<practice_id>[0-9]+)/$', signInPractice),
+         url(r'^signOutPractice/(?P<practice_id>[0-9]+)/$', signOutPractice)
 
 ]
 

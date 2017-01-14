@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+    <div class="container" align="center" style="font-size: large">
+
+
+{% block content %}
+    <div class="container" align="center" style="font-size: x-large">
+
+    <p> {{practice.title}}</p>
+    <p> {{practice.short_description}}</p>
+    <br>
+    <div class="table-bordered" align="center" style="font-size: medium">
+    <p>People Who Came</p>
+    </div>
+    <br>
+    <div class="table-bordered" align="center" style="font-size: medium">
+        {% for attendee in list %}
+            {{forloop.counter}})  {{attendee.user}}  &nbsp {{attendee.ATscore}} &nbsp &nbsp{# starting index 0 #}
+            {% if forloop.counter == 4 %}
+            <br>
+            {% endif %}
+            {% if forloop.counter == 8 %}
+            <br>
+            {% endif %}
+            {% if forloop.counter == 12 %}
+            <br>
+            {% endif %}
+            {% if forloop.counter == 16 %}
+            <br>
+            {% endif %}
+            {% if forloop.counter == 20 %}
+            <br>
+            {% endif %}
+        {% endfor %}
+    <br>
+</body>
+</html>
+    <br>
+    </div>
+    <a href="/signInPractice/{{ practice.id }}">Sign In</a></br></br>
+    <a href="/signOutPractice/{{ practice.id }}">Sign Out</a></br></br>
+
+    <a href= '/editPractice/{{practice.id}}'><td> Edit {{ practice.title }}</td></a></br>
+    <a href="/viewPractices/">View Practices</a> <br>
+    <a href="/practiceHome/">Practice Home</a></br>
+    <a href="/logout/">Logout</a>
+    <br>
+    <br>
+    <a href= '/askDeletePractice/{{practice.id}}'><td> Delete {{ practice.title }}</td></a>
+    </div>
+    </div>
+{% endblock %}

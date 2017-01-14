@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Practice Delete{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+
+            <div class="container" align="center" style="font-size: large">
+        <p>Do you want to delete {{practice.title}} ?</p>
+
+        <br>
+        <br>
+
+        <a href="/deletePractice/{{practice.id}}"> Yes</a><br>
+
+        <br>
+        <br>
+        <br>
+
+
+        <a href="/viewPractices/">View Practices</a><br>
+        <a href="/createPractice/">Create New Practice</a><br>
+    <button><a href="/home/">Back</a></button>
+    </br>
+    <a href="/logout/">Logout</a>
+            </div>
+{% endblock %}

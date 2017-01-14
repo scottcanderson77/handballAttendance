@@ -9,8 +9,13 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     publicKey = models.CharField(max_length=1024)
     privateKey = models.CharField(max_length=1024, default=1)
-    sentMessagesScene= models.IntegerField(default=0)
-    recMessagesScene = models.IntegerField(default=0)
+    practicesAttended= models.IntegerField(default=0)
+    excusedAbsences= models.IntegerField(default=0)
+    ATscore = models.FloatField(default=0)
+    TimeLate = models.IntegerField(default=0)
+    PP = models.IntegerField(default=0)
+    isTeamMember = models.BooleanField(default=False)
+    isOfficer = models.BooleanField(default=False)
     isSuspended = models.BooleanField(default=False)
 
     def __str__(self):
